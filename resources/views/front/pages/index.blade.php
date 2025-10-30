@@ -104,7 +104,7 @@
       <div class="container">
         <div class="row mb-4">
           <div class="col text-center">
-            <h2 class="section-title">Hizmetlerimiz</h2>
+            <h2 class="section-title">Hizmetler</h2>
             <p class="text-muted">Çeşitli alanlarda uzman ekibimizle yanınızdayız.</p>
           </div>
         </div>
