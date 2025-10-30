@@ -1,0 +1,189 @@
+/*
+  Board.css
+  - Proje geneli özel stiller
+  - Açıklamalar Türkçe tutulmuştur
+  - Bootstrap 5 ile uyumlu minimalist ve şık dokunuşlar
+*/
+
+:root {
+  /* Renk paleti - zarif mavi tonlar3 */
+  --board-primary: #0d6efd; /* Bootstrap primary ile uyumlu */
+  --board-accent: #0b5ed7;
+  --board-text: #212529;
+  --board-muted: #6c757d;
+}
+
+/* Genel tipografi ve başlıklar */
+body {
+  color: var(--board-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.section-title {
+  font-weight: 700;
+}
+
+/* Navbar daha ferah görünüm */
+.navbar .nav-link {
+  padding: 0.75rem 0.75rem;
+}
+.navbar .btn {
+  border-radius: 999px; /* hap buton */
+}
+
+/* Kart görünümleri */
+.card {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+.card-img-top {
+  object-fit: cover;
+  height: 180px;
+}
+
+/* Carousel yazıları daha okunur */
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+}
+
+/* Footer */
+footer {
+  background: #fff;
+}
+footer .footer-links a {
+  color: var(--board-muted);
+  text-decoration: none;
+}
+footer .footer-links a:hover {
+  color: var(--board-primary);
+  text-decoration: underline;
+}
+footer .footer-social:hover { color: var(--board-primary); }
+
+/* Dropdown'ı hover ile aç (masaüstü) */
+@media (hover: hover) and (pointer: fine) {
+  .dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; /* bs varsayılan boşlukları düzelt */
+  }
+}
+
+/* Nasıl Çalışır – renkli kutucuklar ve ikonlar */
+.how-it-works .step-card {
+  background: linear-gradient(180deg, #f8faff 0%, #ffffff 100%);
+  border-color: rgba(13, 110, 253, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.how-it-works .step-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0.75rem 1.25rem rgba(0, 0, 0, 0.08);
+  border-color: rgba(13, 110, 253, 0.25);
+}
+.how-it-works .step-badge {
+  border: none;
+  background: rgba(13, 110, 253, 0.12);
+  color: #0d6efd;
+}
+.how-it-works .col-12:nth-child(1) .step-badge { background: rgba(13, 110, 253, 0.12); color: #0d6efd; }
+.how-it-works .col-12:nth-child(2) .step-badge { background: rgba(25, 135, 84, 0.12); color: #198754; }
+.how-it-works .col-12:nth-child(3) .step-badge { background: rgba(255, 193, 7, 0.18); color: #b58100; }
+.how-it-works .col-12:nth-child(1) .step-card h3 { color: #0d6efd; }
+.how-it-works .col-12:nth-child(2) .step-card h3 { color: #198754; }
+.how-it-works .col-12:nth-child(3) .step-card h3 { color: #b58100; }
+
+/* Form girdi odak efektleri */
+.form-control:focus, .form-select:focus {
+  border-color: var(--board-accent);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+/* Responsive dokunuşlar */
+@media (min-width: 992px) {
+  .card-img-top {
+    height: 200px;
+  }
+}
+
+/* Auth Modals */
+.auth-modal .modal-content {
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+.auth-modal .modal-title {
+  font-weight: 700;
+}
+
+/* Carousel: responsive yükseklik, max 500px */
+#mainCarousel .carousel-item img {
+  height: min(50vh, 500px);
+  width: 100%;
+  object-fit: cover;
+}
+@media (max-width: 576px) {
+  #mainCarousel .carousel-item img {
+    height: min(40vh, 500px);
+  }
+}
+
+/* Index page link hover efektleri */
+#index-page a { transition: color 0.2s ease; }
+
+/* Navbar linklerinde alttan ince çizgi animasyonu (sadece index) */
+#index-page .navbar .nav-link {
+  position: relative;
+}
+#index-page .navbar .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: var(--board-primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+#index-page .navbar .nav-link:hover { color: var(--board-primary); }
+#index-page .navbar .nav-link:hover::after { transform: scaleX(1); }
+
+/* Kart linklerinde hafif yükselme, gölge ve görsel zoom (sadece index) */
+#index-page a.text-decoration-none .card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+#index-page a.text-decoration-none:hover .card {
+  transform: translateY(-4px);
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.08);
+}
+#index-page a.text-decoration-none .card-img-top { transition: transform 0.35s ease; }
+#index-page a.text-decoration-none:hover .card-img-top { transform: scale(1.03); }
+#index-page a.text-decoration-none:hover .card-title { color: var(--board-primary); }
+
+/* List page link hover efektleri */
+#list-page a { transition: color 0.2s ease; }
+#list-page .navbar .nav-link { position: relative; }
+#list-page .navbar .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: var(--board-primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+#list-page .navbar .nav-link:hover { color: var(--board-primary); }
+#list-page .navbar .nav-link:hover::after { transform: scaleX(1); }
+
+#list-page a.text-decoration-none .card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+#list-page a.text-decoration-none:hover .card {
+  transform: translateY(-4px);
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.08);
+}
+#list-page a.text-decoration-none .card-img-top { transition: transform 0.35s ease; }
+#list-page a.text-decoration-none:hover .card-img-top { transform: scale(1.03); }
+#list-page a.text-decoration-none:hover .card-title { color: var(--board-primary); }
