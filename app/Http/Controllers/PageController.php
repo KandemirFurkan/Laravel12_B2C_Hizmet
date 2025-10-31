@@ -40,7 +40,8 @@ $blogs = Blog::where('status', 1)
 
        public function blog()
     {
-        return view('front.pages.blog');
+        $blogs = Blog::where('status', 1)->get();
+        return view('front.pages.blog', compact('blogs'));
     }
 
            public function blog_detay($slug)
