@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             HizmetlerSeeder::class,
             BlogSeeder::class,
-
+            SliderSeeder::class,
             SiteSeeder::class,
         ]);
     }

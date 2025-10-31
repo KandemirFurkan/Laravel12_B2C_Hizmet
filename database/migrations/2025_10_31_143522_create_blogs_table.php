@@ -17,6 +17,7 @@ return new class extends Migration
             $table->longText('content')->nullable();
             $table->string('image')->nullable();
             $table->boolean('status')->default(0);
+             $table->string('slug')->nullable();
             $table->timestamps();
         });
     }
