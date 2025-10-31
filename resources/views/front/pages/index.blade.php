@@ -5,33 +5,17 @@
     <section class="bg-light">
       <div class="container py-3">
         <div id="mainCarousel" class="carousel slide rounded overflow-hidden shadow-sm" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-          <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slayt 1"></button>
-          <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1" aria-label="Slayt 2"></button>
-          <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2" aria-label="Slayt 3"></button>
-        </div>
+
         <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img  src="{{ asset('imgs/slider1.jpg') }}" class="d-block w-100" alt="Slider 1">
+          @foreach($sliders as $slider)
+          <div class="carousel-item @if($loop->first) active @endif">
+            <img src="{{ asset($slider->image) }}" class="d-block w-100" alt="{{ $slider->title }}">
             <div class="carousel-caption d-none d-md-block">
-              <h5>Profesyonel Hizmetlere Hızlıca Ulaşın</h5>
-              <p>İhtiyacınıza uygun uzmanları listeler, karşılaştırır ve temasa geçersiniz.</p>
+              <h5>{{ $slider->title }}</h5>
+              <p>{{ $slider->subtitle }}</p>
             </div>
           </div>
-          <div class="carousel-item">
-            <img src="https://placehold.co/1600x500?text=Slider+2" class="d-block w-100" alt="Slider 2">
-            <div class="carousel-caption d-none d-md-block">
-              <h5>Güvenilir Uzmanlar</h5>
-              <p>Doğrulanmış değerlendirmeler ve referanslarla doğru tercih.</p>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <img src="https://placehold.co/1600x500?text=Slider+3" class="d-block w-100" alt="Slider 3">
-            <div class="carousel-caption d-none d-md-block">
-              <h5>Hızlı Teslimat</h5>
-              <p>Takvim ve süreç yönetimi ile işleri kolaylaştırın.</p>
-            </div>
-          </div>
+        @endforeach
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -109,91 +93,28 @@
           </div>
         </div>
         <div class="row g-4">
-          <!-- 8 kart 5fablonu -->
+          <!-- 8 kart 5fablonu -->
+          @foreach ($hizmetlers as $hizmet)
           <div class="col-6 col-md-4 col-lg-3">
             <a href="detail.html" class="text-decoration-none text-dark">
               <div class="card h-100 shadow-sm">
-                <img id="svcImg1" src="/imgs/temizlik.jpg" class="card-img-top" alt="Hizmet 1">
+                <img id="svcImg1" src="{{ $hizmet->image }}" class="card-img-top" alt="{{ $hizmet->title }}">
                 <div class="card-body">
-                  <h5 class="card-title">Temizlik</h5>
+                  <h5 class="card-title">{{ $hizmet->title }}</h5>
                 </div>
               </div>
             </a>
           </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <a href="detail.html" class="text-decoration-none text-dark">
-              <div class="card h-100 shadow-sm">
-                <img id="svcImg2" src="imgs/tadilat.jpg" class="card-img-top" alt="Hizmet 2">
-                <div class="card-body">
-                  <h5 class="card-title">Tadilat</h5>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <a href="detail.html" class="text-decoration-none text-dark">
-              <div class="card h-100 shadow-sm">
-                <img id="svcImg3" src="imgs/boya.jpg" class="card-img-top" alt="Hizmet 3">
-                <div class="card-body">
-                  <h5 class="card-title">Boyama</h5>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <a href="detail.html" class="text-decoration-none text-dark">
-              <div class="card h-100 shadow-sm">
-                <img id="svcImg4" src="imgs/nakliyet.jpg" class="card-img-top" alt="Hizmet 4">
-                <div class="card-body">
-                  <h5 class="card-title">Nakliye</h5>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <a href="detail.html" class="text-decoration-none text-dark">
-              <div class="card h-100 shadow-sm">
-                <img id="svcImg5" src="imgs/bahce.jpg" class="card-img-top" alt="Hizmet 5">
-                <div class="card-body">
-                  <h5 class="card-title">Bahçe Bakımı</h5>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <a href="detail.html" class="text-decoration-none text-dark">
-              <div class="card h-100 shadow-sm">
-                <img id="svcImg6" src="imgs/elektirk.jpg" class="card-img-top" alt="Hizmet 6">
-                <div class="card-body">
-                  <h5 class="card-title">Elektrik</h5>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <a href="detail.html" class="text-decoration-none text-dark">
-              <div class="card h-100 shadow-sm">
-                <img id="svcImg7" src="imgs/tesisat.jpg" class="card-img-top" alt="Hizmet 7">
-                <div class="card-body">
-                  <h5 class="card-title">Sıhhi Tesisat</h5>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <a href="detail.html" class="text-decoration-none text-dark">
-              <div class="card h-100 shadow-sm">
-                <img id="svcImg8" src="imgs/klima.jpg" class="card-img-top" alt="Hizmet 8">
-                <div class="card-body">
-                  <h5 class="card-title">Klima Servisi</h5>
-                </div>
-              </div>
-            </a>
-          </div>
+          @endforeach
+
+
+
+
+
         </div>
         <div class="row mt-4">
           <div class="col text-center">
-            <a href="list.html" class="btn btn-outline-primary px-4">Tümünü Göster</a>
+            <a href="{{ route('hizmetler') }}" class="btn btn-outline-primary px-4">Tümünü Göster</a>
           </div>
         </div>
       </div>
@@ -209,55 +130,26 @@
           </div>
         </div>
         <div class="row g-4">
-          <!-- 4 blog kart -->
-          <div class="col-12 col-md-6 col-lg-3">
+
+            @foreach ($blogs as $blog)
+                   <div class="col-12 col-md-6 col-lg-3">
             <a href="#" class="text-decoration-none text-dark">
               <div class="card h-100 shadow-sm">
-                <img id="blogImg1" src="imgs/temizlik.jpg" class="card-img-top" alt="Blog 1">
+                <img id="blogImg1" src="{{ $blog->image }}" class="card-img-top" alt="{{ $blog->title }}">
                 <div class="card-body">
-                  <h5 class="card-title">Ev Temizliğinde Pratik İpuçları</h5>
-                  <p class="card-text text-muted">Daha verimli temizlik için uygulayabileceğiniz basit adımlar...</p>
+                  <h5 class="card-title">{{ $blog->title }}</h5>
+                  <p class="card-text text-muted">{{ Str::limit($blog->content,60) }}</p>
                 </div>
               </div>
             </a>
           </div>
-          <div class="col-12 col-md-6 col-lg-3">
-            <a href="#" class="text-decoration-none text-dark">
-              <div class="card h-100 shadow-sm">
-                <img id="blogImg2" src="imgs/boya.jpg" class="card-img-top" alt="Blog 2">
-                <div class="card-body">
-                  <h5 class="card-title">Boyada Renk Seçimi</h5>
-                  <p class="card-text text-muted">Mekana uygun renk tonları ile ferah bir atmosfer...</p>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-12 col-md-6 col-lg-3">
-            <a href="#" class="text-decoration-none text-dark">
-              <div class="card h-100 shadow-sm">
-                <img id="blogImg3" src="imgs/elektirk.jpg" class="card-img-top" alt="Blog 3">
-                <div class="card-body">
-                  <h5 class="card-title">Elektrik Arızalarında Güvenlik</h5>
-                  <p class="card-text text-muted">Temel güvenlik önlemleri ile riskleri azaltın...</p>
-                </div>
-              </div>
-            </a>
-          </div>
-          <div class="col-12 col-md-6 col-lg-3">
-            <a href="#" class="text-decoration-none text-dark">
-              <div class="card h-100 shadow-sm">
-                <img id="blogImg4" src="imgs/nakliyet.jpg" class="card-img-top" alt="Blog 4">
-                <div class="card-body">
-                  <h5 class="card-title">Taşınma İpuçları</h5>
-                  <p class="card-text text-muted">Planlı taşınma için kontrol listesi ve öneriler...</p>
-                </div>
-              </div>
-            </a>
-          </div>
+            @endforeach
+
+
         </div>
         <div class="row mt-4">
           <div class="col text-center">
-            <a href="list.html" class="btn btn-outline-primary px-4">Tümünü Göster</a>
+            <a href="{{ route('blog') }}" class="btn btn-outline-primary px-4">Tümünü Göster</a>
           </div>
         </div>
       </div>

@@ -20,31 +20,15 @@
               </a>
             </div>
           </div>
-          <div class="col-6 col-lg-2">
-            <h6 class="fw-bold mb-3">Hızlı Bağlantılar</h6>
-            <ul class="list-unstyled small footer-links">
-              <li><a href="index.html">Ana Sayfa</a></li>
-              <li><a href="list.html">Hizmetler</a></li>
-              <li><a href="contact.html">İletişim</a></li>
-              <li><a href="login.html">Giriş Yap</a></li>
-              <li><a href="register.html">Kayıt Ol</a></li>
-            </ul>
-          </div>
+
           <div class="col-12 col-lg-3">
             <h6 class="fw-bold mb-3">İletişim</h6>
             <ul class="list-unstyled small text-muted mb-3">
-              <li class="mb-1">Adres: İstanbul, Türkiye</li>
-              <li class="mb-1">Telefon: 0 (212) 000 00 00</li>
-              <li>E-posta: info@hizmet.com</li>
+              <li class="mb-1">Adres:{{ $siteSettings->address }}</li>
+              <li class="mb-1">Telefon:{{ $siteSettings->phone }}</li>
+              <li>E-posta:{{ $siteSettings->email }}</li>
             </ul>
-            <form class="row g-2" id="newsletterForm" novalidate>
-              <div class="col-8">
-                <input type="email" class="form-control form-control-sm" placeholder="E-posta" required>
-              </div>
-              <div class="col-4 d-grid">
-                <button class="btn btn-sm btn-primary" type="submit">Abone Ol</button>
-              </div>
-            </form>
+
           </div>
         </div>
         <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between mt-4 pt-3 border-top">

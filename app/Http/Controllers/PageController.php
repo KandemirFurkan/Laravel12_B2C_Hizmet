@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog;
+use App\Models\Slider;
 use App\Models\Category;
+use App\Models\Hizmetler;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -11,7 +14,16 @@ class PageController extends Controller
     public function index()
     {
 $categories = Category::where('status', 1)->get();
-        return view('front.pages.index', compact('categories'));
+$sliders = Slider::where('status', 1)->get();
+$hizmetlers = Hizmetler::where('status', 1)
+->limit(8)
+->get();
+$blogs = Blog::where('status', 1)
+    ->orderBy('id', 'desc')
+    ->limit(4)
+    ->get();
+
+        return view('front.pages.index', compact('categories', 'sliders', 'hizmetlers', 'blogs'));
     }
 
 

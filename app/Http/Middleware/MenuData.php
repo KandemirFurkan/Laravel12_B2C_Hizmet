@@ -14,6 +14,8 @@ class MenuData
      public function handle(Request $request, Closure $next)
     {
         View::share('menus', Category::where('status', 1)->get());
+        View::share('siteSettings', \App\Models\SiteSettings::first());
         return $next($request);
+
     }
 }
