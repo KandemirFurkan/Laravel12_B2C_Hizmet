@@ -96,7 +96,7 @@
           <!-- 8 kart 5fablonu -->
           @foreach ($hizmetlers as $hizmet)
           <div class="col-6 col-md-4 col-lg-3">
-            <a href="{{ route('hizmetler.show', $hizmet->slug) }}" class="text-decoration-none text-dark">
+            <a href="{{ route('hizmetler_detay', $hizmet->slug) }}" class="text-decoration-none text-dark">
               <div class="card h-100 shadow-sm">
                 <img id="svcImg1" src="{{ $hizmet->image }}" class="card-img-top" alt="{{ $hizmet->title }}">
                 <div class="card-body">
@@ -133,7 +133,7 @@
 
             @foreach ($blogs as $blog)
                    <div class="col-12 col-md-6 col-lg-3">
-            <a href="{{ route('blog.show', $blog->slug) }}" class="text-decoration-none text-dark">
+            <a href="{{ route('blog_detay', $blog->slug) }}" class="text-decoration-none text-dark">
               <div class="card h-100 shadow-sm">
                 <img id="blogImg1" src="{{ $blog->image }}" class="card-img-top" alt="{{ $blog->title }}">
                 <div class="card-body">

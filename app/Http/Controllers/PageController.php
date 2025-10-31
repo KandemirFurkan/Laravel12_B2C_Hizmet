@@ -29,12 +29,24 @@ $blogs = Blog::where('status', 1)
 
     public function hizmetler()
     {
-        return view('front.pages.hizmetler');
+        $hizmetlers = Hizmetler::where('status', 1)->get();
+        return view('front.pages.hizmetler', compact('hizmetlers'));
+    }
+        public function hizmetler_detay($slug)
+    {
+        $hizmetler = Hizmetler::where('slug', $slug)->where('status', 1)->firstOrFail();
+        return view('front.pages.hizmetler_detay', compact('hizmetler'));
     }
 
        public function blog()
     {
         return view('front.pages.blog');
+    }
+
+           public function blog_detay($slug)
+    {
+        $blog = Blog::where('slug', $slug)->where('status', 1)->firstOrFail();
+        return view('front.pages.blog_detay', compact('blog'));
     }
 
        public function iletisim()
