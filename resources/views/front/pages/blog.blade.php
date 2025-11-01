@@ -17,7 +17,10 @@
              <img src="{{ asset($blog_item->image) }}" class="card-img-top" alt="{{ $blog_item->title }}">
              <div class="card-body">
                <h5 class="card-title">{{ $blog_item->title }}</h5>
-               <p class="card-text text-muted small">{{ $blog_item->description }}</p>
+              <p class="card-text text-muted small">
+    {{ Str::limit($blog_item->content, 150) }}
+</p>
+
              </div>
            </div>
          </a>

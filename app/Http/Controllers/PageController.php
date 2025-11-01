@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\ContactMail;
 use App\Models\Hizmetler;
 use App\Models\Slider;
 use Illuminate\Http\Request;
@@ -110,5 +111,43 @@ class PageController extends Controller
             ->get(['id', 'title', 'slug']);
 
         return response()->json($hizmetler);
+    }
+
+    public function iletisim_gonder(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'subject' => 'required|string|max:255',
+                'message' => 'required|string',
+            ]);
+
+            ContactMail::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'subject' => $validated['subject'],
+                'message' => $validated['message'],
+                'ip_address' => $request->ip(),
+                'is_read' => 0,
+                'is_replied' => 0,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lütfen tüm alanları doğru şekilde doldurun.',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Bir hata oluştu. Lütfen tekrar deneyin.',
+            ], 500);
+        }
     }
 }

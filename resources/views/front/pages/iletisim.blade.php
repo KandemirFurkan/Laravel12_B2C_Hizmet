@@ -23,25 +23,32 @@
             <div class="card h-100 shadow-sm">
               <div class="card-body">
                 <h2 class="h5 mb-3">İletişim Formu</h2>
+                
+                <!-- Bilgilendirme Mesajı -->
+                <div id="contactFormMessage" class="alert d-none mb-3" role="alert"></div>
+                
                 <form class="row g-3" id="contactForm" novalidate>
                   <div class="col-12 col-md-6">
-                    <label for="adSoyad" class="form-label">Ad Soyad</label>
-                    <input type="text" id="adSoyad" class="form-control" placeholder="Adınız Soyadınız" required>
+                    <label for="adSoyad" class="form-label">Ad Soyad *</label>
+                    <input type="text" name="name" id="adSoyad" class="form-control" placeholder="Adınız Soyadınız" required>
                   </div>
                   <div class="col-12 col-md-6">
-                    <label for="email" class="form-label">E-posta</label>
-                    <input type="email" id="email" class="form-control" placeholder="ornek@mail.com" required>
+                    <label for="email" class="form-label">E-posta *</label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="ornek@mail.com" required>
                   </div>
                   <div class="col-12">
-                    <label for="konu" class="form-label">Konu</label>
-                    <input type="text" id="konu" class="form-control" placeholder="Konu" required>
+                    <label for="konu" class="form-label">Konu *</label>
+                    <input type="text" name="subject" id="konu" class="form-control" placeholder="Konu" required>
                   </div>
                   <div class="col-12">
-                    <label for="mesaj" class="form-label">Mesajınız</label>
-                    <textarea id="mesaj" class="form-control" rows="6" placeholder="Mesajınızı yazın..." required></textarea>
+                    <label for="mesaj" class="form-label">Mesajınız *</label>
+                    <textarea name="message" id="mesaj" class="form-control" rows="6" placeholder="Mesajınızı yazın..." required></textarea>
                   </div>
                   <div class="col-12 d-grid">
-                    <button type="submit" class="btn btn-primary">Gönder</button>
+                    <button type="submit" class="btn btn-primary" id="contactSubmitBtn">
+                      <span class="spinner-border spinner-border-sm d-none me-2" role="status" aria-hidden="true"></span>
+                      Gönder
+                    </button>
                   </div>
                 </form>
               </div>
@@ -52,9 +59,9 @@
               <iframe src="https://maps.google.com/maps?q=istanbul&t=&z=11&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <div class="mt-3 small text-muted">
-              <strong>Adres:</strong> İstanbul, Türkiye &nbsp; | &nbsp;
-              <strong>Tel:</strong> 0 (212) 000 00 00 &nbsp; | &nbsp;
-              <strong>E-posta:</strong> info@hizmet.com
+              <strong>Adres:</strong> {{ $siteSettings->address }} <br />
+              <strong>Tel:</strong> {{ $siteSettings->phone }} <br />
+              <strong>E-posta:</strong> {{ $siteSettings->email }}
             </div>
           </div>
         </div>

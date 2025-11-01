@@ -31,7 +31,7 @@
                 <a href="{{ $item['url'] }}">{{ $item['title'] }}</a>
               </li>
             @else
-              <li class="breadcrumb-item active" aria-current="page">{{ $item['title'] }}</li>
+              <li class="breadcrumb-item active " aria-current="page">{{ $item['title'] }}</li>
             @endif
           @endforeach
         @endif

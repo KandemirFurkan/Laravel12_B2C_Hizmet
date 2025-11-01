@@ -39,9 +39,9 @@
           <div class="col-12 col-lg-3">
             <h6 class="fw-bold mb-3">İletişim</h6>
             <ul class="list-unstyled small text-muted mb-3">
-              <li class="mb-1">Adres:{{ $siteSettings->address }}</li>
-              <li class="mb-1">Telefon:{{ $siteSettings->phone }}</li>
-              <li>E-posta:{{ $siteSettings->email }}</li>
+              <li class="mb-1">Adres &nbsp;: &nbsp;{{ $siteSettings->address }}</li>
+              <li class="mb-1">Telefon &nbsp;: &nbsp;{{ $siteSettings->phone }}</li>
+              <li>E-posta &nbsp;: &nbsp;{{ $siteSettings->email }}</li>
             </ul>
 
           </div>

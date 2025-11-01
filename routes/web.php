@@ -13,3 +13,4 @@ Route::get('/login', [PageController::class, 'login'])->name('login');
 Route::get('/kurumsal_kayit', [PageController::class, 'kurumsal_reg'])->name('kurumsal_reg');
 Route::get('/bireysel_kayit', [PageController::class, 'bireysel_reg'])->name('bireysel_reg');
 Route::get('/api/hizmet-ara', [PageController::class, 'hizmet_ara'])->name('hizmet_ara');
+Route::post('/iletisim-gonder', [PageController::class, 'iletisim_gonder'])->name('iletisim_gonder');
