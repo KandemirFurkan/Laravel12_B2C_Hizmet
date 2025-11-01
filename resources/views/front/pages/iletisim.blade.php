@@ -8,7 +8,7 @@
         <h1 class="h3 mb-2">İletişim</h1>
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="index.html">Ana Sayfa</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('anasayfa') }}">Ana Sayfa</a></li>
             <li class="breadcrumb-item active" aria-current="page">İletişim</li>
           </ol>
         </nav>

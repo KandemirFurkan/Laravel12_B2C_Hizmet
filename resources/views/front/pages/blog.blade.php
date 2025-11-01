@@ -2,19 +2,7 @@
 
 @section('content')
    <!-- Sayfa Başlığı ve Breadcrumb -->
-    <section class="bg-light py-4 border-bottom">
-      <div class="container">
-        <h1 class="h3 mb-2">Hizmet Listesi</h1>
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="index.html">Ana Sayfa</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Liste</li>
-          </ol>
-        </nav>
-      </div>
-    </section>
-
-
+@include('front.inc.breadcrumb')
 
     <!-- Liste Grid -->
     <section class="pb-5">

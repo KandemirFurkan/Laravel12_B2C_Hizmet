@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Hizmetler;
 use App\Models\Slider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class PageController extends Controller
 {
@@ -29,12 +30,23 @@ class PageController extends Controller
     {
         $hizmetlers = Hizmetler::where('status', 1)->get();
 
+        View::share('pageTitle', 'Hizmetler');
+        View::share('breadcrumbList', [
+            ['title' => 'Hizmetler', 'url' => '#'],
+        ]);
+
         return view('front.pages.hizmetler', compact('hizmetlers'));
     }
 
     public function hizmetler_detay($slug)
     {
         $hizmetler = Hizmetler::where('slug', $slug)->where('status', 1)->firstOrFail();
+
+        View::share('pageTitle', $hizmetler->title);
+        View::share('breadcrumbList', [
+            ['title' => 'Hizmetler', 'url' => route('hizmetler')],
+            ['title' => $hizmetler->title, 'url' => '#'],
+        ]);
 
         return view('front.pages.hizmetler_detay', compact('hizmetler'));
     }
@@ -43,12 +55,23 @@ class PageController extends Controller
     {
         $blogs = Blog::where('status', 1)->get();
 
+        View::share('pageTitle', 'Blog');
+        View::share('breadcrumbList', [
+            ['title' => 'Blog', 'url' => '#'],
+        ]);
+
         return view('front.pages.blog', compact('blogs'));
     }
 
     public function blog_detay($slug)
     {
         $blog = Blog::where('slug', $slug)->where('status', 1)->firstOrFail();
+
+        View::share('pageTitle', $blog->title);
+        View::share('breadcrumbList', [
+            ['title' => 'Blog', 'url' => route('blog')],
+            ['title' => $blog->title, 'url' => '#'],
+        ]);
 
         return view('front.pages.blog_detay', compact('blog'));
     }

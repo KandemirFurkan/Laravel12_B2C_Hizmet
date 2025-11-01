@@ -2,19 +2,7 @@
 
 @section('content')
 
-    <!-- Sayfa Başlığı ve Breadcrumb -->
-    <section class="bg-light py-4 border-bottom">
-      <div class="container">
-        <h1 class="h3 mb-2">Hizmet Detayı</h1>
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb mb-0">
-            <li class="breadcrumb-item"><a href="index.html">Ana Sayfa</a></li>
-            <li class="breadcrumb-item"><a href="list.html">Liste</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Detay</li>
-          </ol>
-        </nav>
-      </div>
-    </section>
+@include('front.inc.breadcrumb')
 
     <!-- Detay ve Form Alanı -->
     <section class="py-5">
