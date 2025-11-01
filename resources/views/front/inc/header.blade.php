@@ -1,16 +1,23 @@
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
       <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="{{route('anasayfa')}}">
-          <img src="https://placehold.co/80x80" alt="Logo" class="me-2 rounded-circle">
+          <img src="{{ asset($siteSettings->logo)  }}" alt="Logo" class="me-2 rounded-circle">
 
         </a>
         <!-- Hizmet Ara -->
-        <form class="d-none d-md-flex ms-3 me-auto" role="search" id="navbarSearchForm">
-          <div class="input-group">
-            <input type="search" class="form-control" placeholder="Hizmet ara..." aria-label="Hizmet ara">
-            <button class="btn btn-outline-primary" type="submit">Ara</button>
+        <div class="d-none d-md-flex ms-3 me-auto position-relative w-100" style="max-width: 400px;" id="hizmet-arama-wrapper">
+          <form role="search" id="navbarSearchForm" class="w-100">
+            <div class="input-group">
+              <input type="search" class="form-control" id="hizmet-arama-input" placeholder="Hizmet ara..." aria-label="Hizmet ara" autocomplete="off">
+
+            </div>
+          </form>
+          <!-- Dropdown -->
+          <div class="position-absolute top-100 start-0 mt-1 w-100 bg-white border rounded shadow-lg d-none" id="hizmet-arama-results" style="z-index: 1050; max-height: 300px; overflow-y: auto;">
+            <div class="list-group list-group-flush">
+            </div>
           </div>
-        </form>
+        </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Men fcy fc A e7/Kapat">
           <span class="navbar-toggler-icon"></span>
         </button>

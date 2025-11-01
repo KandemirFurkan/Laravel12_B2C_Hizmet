@@ -187,3 +187,43 @@ footer .footer-social:hover { color: var(--board-primary); }
 #list-page a.text-decoration-none .card-img-top { transition: transform 0.35s ease; }
 #list-page a.text-decoration-none:hover .card-img-top { transform: scale(1.03); }
 #list-page a.text-decoration-none:hover .card-title { color: var(--board-primary); }
+
+.footer-socials {
+  display: flex;
+  gap: 12px;
+}
+
+.footer-socials a {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #6c757d;
+  text-decoration: none;
+  background-color: #f8f9fa;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.footer-socials a:hover {
+  background-color: #e9ecef;
+  color: #000;
+}
+
+/* ikon yerine basit pseudo content */
+.footer-socials a.twitter::before {
+  content: "T";
+  font-weight: bold;
+}
+
+.footer-socials a.facebook::before {
+  content: "F";
+  font-weight: bold;
+}
+
+.footer-socials a.instagram::before {
+  content: "I";
+  font-weight: bold;
+}
+
