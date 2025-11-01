@@ -15,6 +15,7 @@
       Açıklamalar Türkçe tutulmuştur.
     -->
     <link rel="stylesheet" href="{{ asset('css/Board.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
   </head>
   <body id="index-page">
 

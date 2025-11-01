@@ -7,7 +7,9 @@ use App\Models\Category;
 use App\Models\ContactMail;
 use App\Models\Hizmetler;
 use App\Models\Slider;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
 
 class PageController extends Controller
@@ -89,12 +91,14 @@ class PageController extends Controller
 
     public function kurumsal_reg()
     {
-        return view('front.pages.kurumsal_reg');
+        $sectors = Hizmetler::where('status', 1)->get();
+
+        return view('front.pages.kurumsal_reg', compact('sectors'));
     }
 
     public function bireysel_reg()
     {
-        return view('front.pages.bireysel_reg');
+        return view('front.pages.bireysel_Reg');
     }
 
     public function hizmet_ara(Request $request)
@@ -150,4 +154,103 @@ class PageController extends Controller
             ], 500);
         }
     }
+
+    public function bireysel_kayit(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:users,email',
+                'password' => 'required|string|min:6',
+            ]);
+
+            User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'registration_date' => now(),
+                'role' => 1,
+                'status' => 1,
+                'login_ip' => $request->ip(),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Kaydınız başarıyla oluşturuldu! Giriş yapabilirsiniz.',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lütfen tüm alanları doğru şekilde doldurun.',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin.',
+            ], 500);
+        }
+    }
+
+    public function kurumsal_kayit(Request $request)
+    {
+        try {
+            // E-posta kontrolü
+            if (User::where('email', $request->email)->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Bu e-posta adresi zaten kayıtlı. Lütfen farklı bir e-posta adresi kullanın.',
+                ], 422);
+            }
+
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'phone' => 'required|string|max:11|min:11',
+                'sector' => 'required|string|max:255',
+                'location' => 'required|string|max:255',
+                'content' => 'required|string|min:30',
+            ]);
+
+            User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'sector' => $validated['sector'],
+                'location' => $validated['location'],
+                'content' => $validated['content'],
+                'password' => Hash::make('temp'.rand(1000, 9999)),
+                'registration_date' => now(),
+                'role' => 2,
+                'status' => 0,
+                'login_ip' => $request->ip(),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Başvurunuz başarıyla gönderildi! Onay sürecinden sonra size dönüş yapacağız.',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lütfen tüm alanları doğru şekilde doldurun.',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Başvuru sırasında bir hata oluştu. Lütfen tekrar deneyin.',
+            ], 500);
+        }
+    }
+
+    public function tekliflerim()
+    {
+        return view('front.pages.tekliflerim');
+    }
+    public function talepler()
+    {
+        return view('front.pages.talepler');
+    }
+
 }

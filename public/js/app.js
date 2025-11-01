@@ -204,3 +204,179 @@ window.APP_IMAGE_CONFIG = {
       });
   });
 })();
+
+// Bireysel Kayıt Formu AJAX
+(function initRegisterForm() {
+  const registerForm = document.getElementById('registerForm');
+  const registerFormMessage = document.getElementById('registerFormMessage');
+  const registerSubmitBtn = document.getElementById('registerSubmitBtn');
+  const registerSpinner = registerSubmitBtn?.querySelector('.spinner-border');
+
+  if (!registerForm || !registerFormMessage || !registerSubmitBtn) return;
+
+  registerForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Form geçerliliğini kontrol et
+    if (!registerForm.checkValidity()) {
+      registerForm.reportValidity();
+      return;
+    }
+
+    // Loading state
+    registerSubmitBtn.disabled = true;
+    if (registerSpinner) registerSpinner.classList.remove('d-none');
+
+    // Form verisini al
+    const formData = new FormData(registerForm);
+    const data = Object.fromEntries(formData);
+
+    // AJAX gönder
+    fetch('/bireysel_kayit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(result => {
+        // Loading state kapat
+        registerSubmitBtn.disabled = false;
+        if (registerSpinner) registerSpinner.classList.add('d-none');
+
+        if (result.success) {
+          // Başarılı - formu temizle
+          registerForm.reset();
+          registerForm.classList.remove('was-validated');
+          
+          // Başarı mesajı göster
+          registerFormMessage.className = 'alert alert-success mb-3';
+          registerFormMessage.textContent = result.message;
+          registerFormMessage.classList.remove('d-none');
+          
+          // Giriş sayfasına yönlendirme linki ekle
+          const loginLink = document.createElement('div');
+          loginLink.className = 'mt-2';
+          loginLink.innerHTML = '<a href="/login" class="alert-link">Giriş sayfasına git</a>';
+          registerFormMessage.appendChild(loginLink);
+        } else {
+          // Hata mesajı göster
+          registerFormMessage.className = 'alert alert-danger mb-3';
+          registerFormMessage.textContent = result.message || 'Bir hata oluştu. Lütfen tekrar deneyin.';
+          registerFormMessage.classList.remove('d-none');
+        }
+      })
+      .catch(error => {
+        console.error('Kayıt hatası:', error);
+        
+        // Loading state kapat
+        registerSubmitBtn.disabled = false;
+        if (registerSpinner) registerSpinner.classList.add('d-none');
+
+        // Hata mesajı
+        registerFormMessage.className = 'alert alert-danger mb-3';
+        registerFormMessage.textContent = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+        registerFormMessage.classList.remove('d-none');
+      });
+  });
+
+  // Bootstrap form validation
+  registerForm.addEventListener('submit', function (event) {
+    if (!registerForm.checkValidity()) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    registerForm.classList.add('was-validated');
+  }, false);
+})();
+
+// Kurumsal Kayıt Formu AJAX
+(function initCorporateForm() {
+  const corporateForm = document.getElementById('corporateForm');
+  const corporateFormMessage = document.getElementById('corporateFormMessage');
+  const corporateSubmitBtn = document.getElementById('corporateSubmitBtn');
+  const corporateSpinner = corporateSubmitBtn?.querySelector('.spinner-border');
+
+  if (!corporateForm || !corporateFormMessage || !corporateSubmitBtn) return;
+
+  corporateForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Form geçerliliğini kontrol et
+    if (!corporateForm.checkValidity()) {
+      corporateForm.reportValidity();
+      return;
+    }
+
+    // Loading state
+    corporateSubmitBtn.disabled = true;
+    if (corporateSpinner) corporateSpinner.classList.remove('d-none');
+
+    // Form verisini al
+    const formData = new FormData(corporateForm);
+    const data = Object.fromEntries(formData);
+
+    // AJAX gönder
+    fetch('/kurumsal_kayit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(result => {
+        // Loading state kapat
+        corporateSubmitBtn.disabled = false;
+        if (corporateSpinner) corporateSpinner.classList.add('d-none');
+
+        if (result.success) {
+          // Başarılı - formu temizle
+          corporateForm.reset();
+          corporateForm.classList.remove('was-validated');
+          
+          // Başarı mesajı göster
+          corporateFormMessage.className = 'alert alert-success mb-3';
+          corporateFormMessage.textContent = result.message;
+          corporateFormMessage.classList.remove('d-none');
+          
+          // Giriş sayfasına yönlendirme linki ekle
+          const loginLink = document.createElement('div');
+          loginLink.className = 'mt-2';
+          loginLink.innerHTML = '<a href="/login" class="alert-link">Giriş sayfasına git</a>';
+          corporateFormMessage.appendChild(loginLink);
+        } else {
+          // Hata mesajı göster
+          corporateFormMessage.className = 'alert alert-danger mb-3';
+          corporateFormMessage.textContent = result.message || 'Bir hata oluştu. Lütfen tekrar deneyin.';
+          corporateFormMessage.classList.remove('d-none');
+        }
+      })
+      .catch(error => {
+        console.error('Başvuru hatası:', error);
+        
+        // Loading state kapat
+        corporateSubmitBtn.disabled = false;
+        if (corporateSpinner) corporateSpinner.classList.add('d-none');
+
+        // Hata mesajı
+        corporateFormMessage.className = 'alert alert-danger mb-3';
+        corporateFormMessage.textContent = 'Bir hata oluştu. Lütfen tekrar deneyin.';
+        corporateFormMessage.classList.remove('d-none');
+      });
+  });
+
+  // Bootstrap form validation
+  corporateForm.addEventListener('submit', function (event) {
+    if (!corporateForm.checkValidity()) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    corporateForm.classList.add('was-validated');
+  }, false);
+})();

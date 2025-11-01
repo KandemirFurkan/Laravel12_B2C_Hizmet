@@ -22,48 +22,73 @@
             <div class="card shadow-sm">
               <div class="card-body p-4 p-lg-5">
                 <h2 class="h5 mb-4">Kurumsal Üyelik Başvuru Formu</h2>
+                
+                <!-- Bilgilendirme Mesajı -->
+                <div id="corporateFormMessage" class="alert d-none mb-3" role="alert"></div>
+                
                 <form id="corporateForm" class="row g-3" novalidate>
                   <div class="col-12">
-                    <label for="companyName" class="form-label">Firma Adı</label>
-                    <input type="text" id="companyName" class="form-control" placeholder="Örn: ABC A.Ş." required>
+                    <label for="companyName" class="form-label">Firma Adı <span class="text-danger">*</span></label>
+                    <input type="text" name="name" id="companyName" class="form-control" placeholder="Örn: ABC A.Ş." required>
+                    <div class="invalid-feedback">
+                      Lütfen firma adınızı girin.
+                    </div>
                   </div>
+
                   <div class="col-12 col-md-6">
-                    <label for="taxNumber" class="form-label">Vergi Numarası</label>
-                    <input type="text" id="taxNumber" class="form-control" placeholder="Vergi No" required>
-                  </div>
-                  <div class="col-12 col-md-6">
-                    <label for="sector" class="form-label">Sektör</label>
-                    <select id="sector" class="form-select" required>
-                      <option selected disabled>Seçiniz</option>
-                      <option>Perakende</option>
-                      <option>Üretim</option>
-                      <option>Hizmet</option>
-                      <option>Teknoloji</option>
-                      <option>Diğer</option>
+                    <label for="sector" class="form-label">Sektör <span class="text-danger">*</span></label>
+                    <select name="sector" id="sector" class="form-select" required>
+                      <option selected disabled value="">Seçiniz</option>
+                      @foreach ($sectors as $sector)
+                        <option value="{{ $sector->title }}">{{ $sector->title }}</option>
+                      @endforeach
                     </select>
+                    <div class="invalid-feedback">
+                      Lütfen sektör seçiniz.
+                    </div>
                   </div>
                   <div class="col-12 col-md-6">
-                    <label for="email" class="form-label">Kurumsal E-posta</label>
-                    <input type="email" id="email" class="form-control" placeholder="ornek@firma.com" required>
+                    <label for="email" class="form-label">Kurumsal E-posta <span class="text-danger">*</span></label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="ornek@firma.com" required>
+                    <div class="invalid-feedback">
+                      Lütfen geçerli bir e-posta adresi girin.
+                    </div>
                   </div>
                   <div class="col-12 col-md-6">
-                    <label for="phone" class="form-label">Telefon</label>
-                    <input type="tel" id="phone" class="form-control" placeholder="0 (5xx) xxx xx xx" required>
+                    <label for="phone" class="form-label">Telefon <span class="text-danger">*</span></label>
+                    <input type="tel" name="phone" id="phone" class="form-control" 
+                    placeholder="0532xxxxxxx" required>
+                    <div class="invalid-feedback">
+                      Lütfen telefon numaranızı girin.
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6">
+                    <label for="address" class="form-label">Şehir <span class="text-danger">*</span></label>
+                    <select name="location" id="address" class="form-select" required>
+                      <option selected disabled value="">Seçiniz</option>
+                      <option value="İstanbul">İstanbul</option>
+                      <option value="Ankara">Ankara</option>
+                      <option value="İzmir">İzmir</option>
+                      <option value="Bursa">Bursa</option>
+                      <option value="Antalya">Antalya</option>
+                    </select>
+                    <div class="invalid-feedback">
+                      Lütfen şehir seçiniz.
+                    </div>
                   </div>
                   <div class="col-12">
-                    <label for="website" class="form-label">Web Sitesi (opsiyonel)</label>
-                    <input type="url" id="website" class="form-control" placeholder="https://...">
-                  </div>
-                  <div class="col-12">
-                    <label for="address" class="form-label">Adres</label>
-                    <textarea id="address" class="form-control" rows="3" placeholder="Açık adres" required></textarea>
-                  </div>
-                  <div class="col-12">
-                    <label for="notes" class="form-label">Notlar (opsiyonel)</label>
-                    <textarea id="notes" class="form-control" rows="4" placeholder="İhtiyaçlarınızı kısaca anlatın..."></textarea>
+                    <label for="notes" class="form-label">Firmanız Hakkında <span class="text-danger">*</span></label>
+                    <textarea name="content" id="notes" class="form-control" rows="4" placeholder="Firmanızı tanıtın (en az 30 karakter)..." required minlength="30"></textarea>
+                    <div class="invalid-feedback">
+                      Lütfen en az 30 karakter açıklama girin.
+                    </div>
                   </div>
                   <div class="col-12 d-grid">
-                    <button type="submit" class="btn btn-primary">Başvuruyu Gönder</button>
+                    <button type="submit" class="btn btn-primary" id="corporateSubmitBtn">
+                      <span class="spinner-border spinner-border-sm d-none me-2" role="status" aria-hidden="true"></span>
+                      Başvuruyu Gönder
+                    </button>
                   </div>
                 </form>
               </div>

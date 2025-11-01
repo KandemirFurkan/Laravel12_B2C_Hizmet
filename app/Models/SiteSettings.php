@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class SiteSettings extends Model
 {
-   protected $fillable = [
+    protected $fillable = [
         'site_name',
         'logo',
         'favicon',
         'contact_email',
         'contact_phone',
         'address',
+        'map',
         'facebook_url',
         'twitter_url',
         'instagram_url',

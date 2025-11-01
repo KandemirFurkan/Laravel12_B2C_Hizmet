@@ -23,10 +23,10 @@
             <div class="card h-100 shadow-sm">
               <div class="card-body">
                 <h2 class="h5 mb-3">İletişim Formu</h2>
-                
+
                 <!-- Bilgilendirme Mesajı -->
                 <div id="contactFormMessage" class="alert d-none mb-3" role="alert"></div>
-                
+
                 <form class="row g-3" id="contactForm" novalidate>
                   <div class="col-12 col-md-6">
                     <label for="adSoyad" class="form-label">Ad Soyad *</label>
@@ -56,7 +56,7 @@
           </div>
           <div class="col-12 col-lg-6">
             <div class="ratio ratio-16x9 rounded overflow-hidden shadow-sm">
-              <iframe src="https://maps.google.com/maps?q=istanbul&t=&z=11&ie=UTF8&iwloc=&output=embed" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7983.11657020487!2d29.26243500948175!3d40.868223928207144!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14caddaaf65669e7%3A0x85611e90bd8f748b!2s%C4%B0BB%20Kaynarca%20Sahil%20Park%C4%B1!5e1!3m2!1str!2str!4v1762016961393!5m2!1str!2str" width="400" height="300" style="border:0;" allowfullscreen=" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <div class="mt-3 small text-muted">
               <strong>Adres:</strong> {{ $siteSettings->address }} <br />
