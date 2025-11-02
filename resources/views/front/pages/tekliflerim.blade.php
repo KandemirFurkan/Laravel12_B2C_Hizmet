@@ -2,7 +2,7 @@
 
 @section('content')
    <!-- Profil Header -->
- 
+
     <!-- Profil Header -->
     <section class="profile-header">
       <div class="container">
@@ -10,7 +10,7 @@
           <div class="col-12 col-md-3 text-center text-md-start mb-3 mb-md-0">
             <img src="https://placehold.co/120x120/667eea/ffffff?text=AY" alt="Profil Fotoğrafı" class="profile-avatar" id="profileAvatar">
             <div class="mt-3">
-           
+
               <input type="file" id="avatarUpload" class="d-none" accept="image/*" onchange="previewAvatar(event)">
             </div>
           </div>
@@ -55,7 +55,7 @@
         <div class="row g-4">
           <!-- Form 1: Temizlik -->
           <div class="col-12 col-md-6 col-lg-4">
-            <div class="card form-card shadow-sm h-100" onclick="window.location.href='offer-selection.html?form=1'">
+            <div class="card form-card shadow-sm h-100" >
               <div class="card-body">
                 <div class="d-flex align-items-start gap-3 mb-3">
                   <div class="category-icon bg-primary bg-opacity-10 text-primary">
@@ -93,153 +93,16 @@
                 <div class="d-flex justify-content-between align-items-center">
                   <small class="text-muted">
                     <i class="bi bi-file-text me-1"></i>
-                    Detayları görüntüle →
+                    <a href="#">Detayları görüntüle →</a>
                   </small>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Form 2: Tadilat -->
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="card form-card shadow-sm h-100" onclick="window.location.href='offer-selection.html?form=2'">
-              <div class="card-body">
-                <div class="d-flex align-items-start gap-3 mb-3">
-                  <div class="category-icon bg-danger bg-opacity-10 text-danger">
-                    🔨
-                  </div>
-                  <div class="flex-grow-1">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                      <span class="badge category-badge bg-danger">Tadilat</span>
-                      <span class="badge status-badge bg-warning text-dark">Teklif Bekliyor</span>
-                    </div>
-                    <h5 class="card-title mb-2">Banyo Tadilatı</h5>
-                    <p class="form-preview mb-3">
-                      Banyo küveti ve duşakabin değişimi ile lavabo montajı için profesyonel ekip arıyorum.
-                    </p>
-                  </div>
-                </div>
-                <div class="border-top pt-3">
-                  <div class="row text-center">
-                    <div class="col-4">
-                      <div class="offer-count">3</div>
-                      <small class="text-muted">Teklif</small>
-                    </div>
-                    <div class="col-4">
-                      <div class="text-muted fw-bold">12 Ocak</div>
-                      <small class="text-muted">Talep Tarihi</small>
-                    </div>
-                    <div class="col-4">
-                      <div class="text-muted fw-bold">₺8.500-₺12.000</div>
-                      <small class="text-muted">Fiyat Aralığı</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer bg-transparent border-top-0">
-                <div class="d-flex justify-content-between align-items-center">
-                  <small class="text-muted">
-                    <i class="bi bi-file-text me-1"></i>
-                    Detayları görüntüle →
-                  </small>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- Form 3: Elektrik -->
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="card form-card shadow-sm h-100" onclick="window.location.href='offer-selection.html?form=3'">
-              <div class="card-body">
-                <div class="d-flex align-items-start gap-3 mb-3">
-                  <div class="category-icon bg-warning bg-opacity-10 text-warning">
-                    ⚡
-                  </div>
-                  <div class="flex-grow-1">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                      <span class="badge category-badge bg-warning text-dark">Elektrik</span>
-                      <span class="badge status-badge bg-success">Teklif Seçildi</span>
-                    </div>
-                    <h5 class="card-title mb-2">Elektrik Tesisatı</h5>
-                    <p class="form-preview mb-3">
-                      Ev için yeni elektrik tesisatı çekimi ve pano montajı gerekiyor. Sigortalı ve sertifikalı ekip.
-                    </p>
-                  </div>
-                </div>
-                <div class="border-top pt-3">
-                  <div class="row text-center">
-                    <div class="col-4">
-                      <div class="offer-count">4</div>
-                      <small class="text-muted">Teklif</small>
-                    </div>
-                    <div class="col-4">
-                      <div class="text-muted fw-bold">10 Ocak</div>
-                      <small class="text-muted">Talep Tarihi</small>
-                    </div>
-                    <div class="col-4">
-                      <div class="text-success fw-bold">₺15.000</div>
-                      <small class="text-muted">Seçilen Teklif</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer bg-transparent border-top-0">
-                <div class="d-flex justify-content-between align-items-center">
-                  <small class="text-muted">
-                    <i class="bi bi-file-text me-1"></i>
-                    Detayları görüntüle →
-                  </small>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- Form 4: Boyama -->
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="card form-card shadow-sm h-100" onclick="window.location.href='offer-selection.html?form=4'">
-              <div class="card-body">
-                <div class="d-flex align-items-start gap-3 mb-3">
-                  <div class="category-icon bg-info bg-opacity-10 text-info">
-                    🎨
-                  </div>
-                  <div class="flex-grow-1">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                      <span class="badge category-badge bg-info">Boyama</span>
-                      <span class="badge status-badge bg-warning text-dark">Teklif Bekliyor</span>
-                    </div>
-                    <h5 class="card-title mb-2">İç Mekan Boyama</h5>
-                    <p class="form-preview mb-3">
-                      3+1 daire için salon ve yatak odalarının boyanması. Astar ve son kat olmak üzere iki kat boya.
-                    </p>
-                  </div>
-                </div>
-                <div class="border-top pt-3">
-                  <div class="row text-center">
-                    <div class="col-4">
-                      <div class="offer-count">6</div>
-                      <small class="text-muted">Teklif</small>
-                    </div>
-                    <div class="col-4">
-                      <div class="text-muted fw-bold">8 Ocak</div>
-                      <small class="text-muted">Talep Tarihi</small>
-                    </div>
-                    <div class="col-4">
-                      <div class="text-muted fw-bold">₺4.200-₺6.800</div>
-                      <small class="text-muted">Fiyat Aralığı</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer bg-transparent border-top-0">
-                <div class="d-flex justify-content-between align-items-center">
-                  <small class="text-muted">
-                    <i class="bi bi-file-text me-1"></i>
-                    Detayları görüntüle →
-                  </small>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
 
         <!-- Boş Durum (gerekirse) -->

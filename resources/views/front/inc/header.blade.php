@@ -31,14 +31,41 @@
             @endforeach
             <li class="nav-item"><a class="nav-link" href="{{route('iletisim')}}">İletişim</a></li>
             <li class="nav-item ms-lg-3 my-2 my-lg-0 d-flex align-items-center gap-2">
-              <a class="btn btn-outline-primary" href="{{route('login')}}" role="button">Giriş Yap</a>
-              <div class="dropdown">
-                <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Kayıt Ol</a>
-                <ul class="dropdown-menu dropdown-menu-end shadow">
-                  <li><a class="dropdown-item" href="{{route('bireysel_reg')}}">Bireysel Üyelik</a></li>
-                  <li><a class="dropdown-item" href="{{route('kurumsal_reg')}}">Kurumsal Üyelik</a></li>
-                </ul>
-              </div>
+              @auth
+                @php
+                  $userRole = (string) Auth::user()->role;
+                @endphp
+                <div class="dropdown">
+                  <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Hesabım</a>
+                  <ul class="dropdown-menu dropdown-menu-end shadow">
+                    @if($userRole === '1')
+                      {{-- Role 1: Bireysel Kullanıcı --}}
+                      <li><a class="dropdown-item" href="{{route('tekliflerim')}}">Talepler</a></li>
+                      <li><a class="dropdown-item" href="#">Hesap Ayarları</a></li>
+                    @elseif($userRole === '2')
+                      {{-- Role 2: Kurumsal Kullanıcı --}}
+                      <li><a class="dropdown-item" href="{{route('talepler')}}">Teklifler</a></li>
+                      <li><a class="dropdown-item" href="#">Firma Ayarları</a></li>
+                    @endif
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                      <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="dropdown-item">Çıkış Yap</button>
+                      </form>
+                    </li>
+                  </ul>
+                </div>
+              @else
+                <a class="btn btn-outline-primary" href="{{route('login')}}" role="button">Giriş Yap</a>
+                <div class="dropdown">
+                  <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Kayıt Ol</a>
+                  <ul class="dropdown-menu dropdown-menu-end shadow">
+                    <li><a class="dropdown-item" href="{{route('bireysel_reg')}}">Bireysel Üyelik</a></li>
+                    <li><a class="dropdown-item" href="{{route('kurumsal_reg')}}">Kurumsal Üyelik</a></li>
+                  </ul>
+                </div>
+              @endauth
             </li>
           </ul>
         </div>

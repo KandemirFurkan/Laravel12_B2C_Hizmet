@@ -20,14 +20,55 @@
             <div class="card shadow-sm">
               <div class="card-body p-4 p-lg-5">
                 <h2 class="h4 mb-4">Hesabınıza giriş yapın</h2>
-                <form id="loginForm" class="row g-3" novalidate>
+
+                @if (session('success'))
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                @endif
+
+                @if ($errors->any())
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <ul class="mb-0">
+                      @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                      @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                @endif
+
+                <form action="{{ route('login.post') }}" method="POST" class="row g-3" novalidate>
+                  @csrf
                   <div class="col-12">
                     <label class="form-label" for="loginEmail">E-posta</label>
-                    <input class="form-control" type="email" id="loginEmail" placeholder="ornek@mail.com" required>
+                    <input 
+                      class="form-control @error('email') is-invalid @enderror" 
+                      type="email" 
+                      id="loginEmail" 
+                      name="email" 
+                      value="{{ old('email') }}"
+                      placeholder="ornek@mail.com" 
+                      required
+                    >
+                    @error('email')
+                      <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                   </div>
                   <div class="col-12">
                     <label class="form-label" for="loginPassword">Şifre</label>
-                    <input class="form-control" type="password" id="loginPassword" placeholder="••••••••" required>
+                    <input 
+                      class="form-control @error('password') is-invalid @enderror" 
+                      type="password" 
+                      id="loginPassword" 
+                      name="password" 
+                      placeholder="••••••••" 
+                      required
+                    >
+                    @error('password')
+                      <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                   </div>
                   <div class="col-12 d-grid">
                     <button class="btn btn-primary" type="submit">Giriş Yap</button>

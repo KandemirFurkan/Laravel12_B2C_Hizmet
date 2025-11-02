@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Models\Blog;
 use App\Models\Category;
 use App\Models\ContactMail;
@@ -9,6 +10,7 @@ use App\Models\Hizmetler;
 use App\Models\Slider;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
 
@@ -87,6 +89,44 @@ class PageController extends Controller
     public function login()
     {
         return view('front.pages.login');
+    }
+
+    public function login_post(LoginRequest $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate();
+
+            $user = Auth::user();
+            $user->update(['login_ip' => $request->ip()]);
+
+            // Role'e göre yönlendirme
+            $role = (string) $user->role;
+
+            if ($role === '1') {
+                return redirect()->route('tekliflerim')->with('success', 'Başarıyla giriş yaptınız.');
+            } elseif ($role === '2') {
+                return redirect()->route('talepler')->with('success', 'Başarıyla giriş yaptınız.');
+            }
+
+            // Role tanımlı değilse varsayılan olarak talepler sayfasına yönlendir
+         /*   return redirect()->route('tekliflerim')->with('success', 'Başarıyla giriş yaptınız.');
+        */    }
+
+        return back()->withErrors([
+            'email' => 'E-posta adresi veya şifre hatalı.',
+        ])->onlyInput('email');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('anasayfa')->with('success', 'Başarıyla çıkış yaptınız.');
     }
 
     public function kurumsal_reg()
@@ -248,9 +288,18 @@ class PageController extends Controller
     {
         return view('front.pages.tekliflerim');
     }
+
+    public function teklif_detay(Request $request)
+    {
+
+       $id = $request->query('id'); // GET parametresini alır
+
+    // $teklif = Teklif::find($id);
+    return view('front.pages.teklif_detay', compact('id'));
+    }
+
     public function talepler()
     {
         return view('front.pages.talepler');
     }
-
 }
