@@ -52,7 +52,7 @@
                         <label for="kategori" class="form-label">Hizmet Kategorisi</label>
                         <select id="kategori" name="kategori" class="form-select" required >
                           @foreach($sectors as $sector)
-                            <option value="{{ $sector->title }}" {{ $sector->title === $hizmetler->title ? 'selected' : '' }}>{{ $sector->title }}</option>
+                            <option value="{{ $sector->id }}" {{ $sector->title === $hizmetler->title ? 'selected' : '' }}>{{ $sector->title }}</option>
                           @endforeach
                         </select>
                       </div>
