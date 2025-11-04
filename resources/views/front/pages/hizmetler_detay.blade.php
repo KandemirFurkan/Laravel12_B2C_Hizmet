@@ -16,6 +16,10 @@
             <p class="text-muted">{{$hizmetler->content}}</p>
 
           </div>
+
+
+
+
           <!-- Form -->
           <div class="col-12 col-lg-6">
             <div class="card shadow-sm">
@@ -26,36 +30,41 @@
                   @endphp
                   @if($userRole === '1')
                     {{-- Role 1: Bireysel Kullanıcı - Form Göster --}}
+                    @php
+                      $user = Auth::user();
+                    @endphp
                     <h3 class="h5 mb-3">Hizmet Talep Formu</h3>
                     <form class="row g-3" id="requestForm" novalidate>
                       <div class="col-12">
                         <label for="adSoyad" class="form-label">Ad Soyad</label>
-                        <input type="text" class="form-control" id="adSoyad" placeholder="Adınız Soyadınız" required>
+                        <input type="text" class="form-control" id="adSoyad" value="{{ $user->name }}" placeholder="Adınız Soyadınız" required disabled>
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="email" class="form-label">E-posta</label>
-                        <input type="email" class="form-control" id="email" placeholder="ornek@mail.com" required>
+                        <input type="email" class="form-control" id="email" value="{{ $user->email }}" placeholder="ornek@mail.com" required disabled>
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="telefon" class="form-label">Telefon</label>
-                        <input type="tel" class="form-control" id="telefon" placeholder="05xx xxx xx xx" required>
+                        <input type="tel" class="form-control" id="telefon" value="{{ $user->phone ?? '' }}" placeholder="05xx xxx xx xx" required disabled>
                       </div>
-                      <div class="col-12">
+                      <div class="col-12 col-md-6">
                         <label for="kategori" class="form-label">Hizmet Kategorisi</label>
-                        <select id="kategori" class="form-select" required>
-                          <option selected disabled>Seçiniz</option>
-                          <option>Temizlik</option>
-                          <option>Tadilat</option>
-                          <option>Elektrik</option>
-                          <option>Diğer</option>
+                        <select id="kategori" class="form-select" required disabled>
+                          <option selected value="{{ $hizmetler->title }}">{{ $hizmetler->title }}</option>
+                        </select>
+                      </div>
+                        <div class="col-12 col-md-6">
+                        <label for="sehir" class="form-label">Şehir</label>
+                        <select id="sehir" class="form-select" required disabled>
+                          <option selected value="{{ $user->location ?? '' }}">{{ $user->location ?? 'Belirtilmemiş' }}</option>
                         </select>
                       </div>
                       <div class="col-12">
                         <label for="mesaj" class="form-label">Açıklama</label>
-                        <textarea class="form-control" id="mesaj" rows="5" placeholder="İhtiyacınızı detaylandırın..." required></textarea>
+                        <textarea class="form-control" id="mesaj" rows="5" placeholder="İhtiyacınızı detaylandırın..." required ></textarea>
                       </div>
                       <div class="col-12 d-grid">
-                        <button type="submit" class="btn btn-primary">Talep Gönder</button>
+                        <button type="submit" class="btn btn-primary" >Talep Gönder</button>
                       </div>
                     </form>
                   @elseif($userRole === '2')
@@ -69,7 +78,7 @@
                       </div>
                       <h3 class="h5 mb-3 text-danger">Firma Hesabıyla Hizmet Alınamaz</h3>
                       <p class="text-muted mb-4">
-                        Üzgünüz, firma hesapları ile hizmet alınamamaktadır. 
+                        Üzgünüz, firma hesapları ile hizmet alınamamaktadır.
                         Bu platform sadece bireysel kullanıcılar için hizmet vermektedir.
                       </p>
                       <div class="alert alert-info mb-0" role="alert">
@@ -88,7 +97,7 @@
                     </div>
                     <h3 class="h5 mb-3">Hizmet Alabilmek İçin Kayıt Olun</h3>
                     <p class="text-muted mb-4">
-                      Bu hizmeti almak için önce hesabınızın olması gerekmektedir. 
+                      Bu hizmeti almak için önce hesabınızın olması gerekmektedir.
                       Ücretsiz kayıt olarak hizmet talebinde bulunabilirsiniz.
                     </p>
                     <div class="d-grid gap-2">
@@ -97,7 +106,7 @@
                         Kayıt Ol
                       </a>
                       <p class="text-muted small mb-0 mt-2">
-                        Zaten hesabınız var mı? 
+                        Zaten hesabınız var mı?
                         <a href="{{ route('login') }}" class="text-decoration-none">Giriş Yap</a>
                       </p>
                     </div>
@@ -106,6 +115,9 @@
               </div>
             </div>
           </div>
+
+
+
         </div>
       </div>
     </section>

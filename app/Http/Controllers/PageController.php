@@ -111,8 +111,9 @@ class PageController extends Controller
             }
 
             // Role tanımlı değilse varsayılan olarak talepler sayfasına yönlendir
-         /*   return redirect()->route('tekliflerim')->with('success', 'Başarıyla giriş yaptınız.');
-        */    }
+            /*   return redirect()->route('tekliflerim')->with('success', 'Başarıyla giriş yaptınız.');
+        */
+        }
 
         return back()->withErrors([
             'email' => 'E-posta adresi veya şifre hatalı.',
@@ -201,12 +202,14 @@ class PageController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|max:255|unique:users,email',
+                'phone' => 'required|string|size:11',
                 'password' => 'required|string|min:6',
             ]);
 
             User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
+                'phone' => $validated['phone'],
                 'password' => Hash::make($validated['password']),
                 'registration_date' => now(),
                 'role' => 1,
@@ -246,7 +249,7 @@ class PageController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
-                'phone' => 'required|string|max:11|min:11',
+                'phone' => 'required|string|size:11',
                 'sector' => 'required|string|max:255',
                 'location' => 'required|string|max:255',
                 'content' => 'required|string|min:30',
@@ -292,10 +295,10 @@ class PageController extends Controller
     public function teklif_detay(Request $request)
     {
 
-       $id = $request->query('id'); // GET parametresini alır
+        $id = $request->query('id'); // GET parametresini alır
 
-    // $teklif = Teklif::find($id);
-    return view('front.pages.teklif_detay', compact('id'));
+        // $teklif = Teklif::find($id);
+        return view('front.pages.teklif_detay', compact('id'));
     }
 
     public function talepler()
