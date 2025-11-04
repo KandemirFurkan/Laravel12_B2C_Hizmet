@@ -16,12 +16,13 @@ Route::get('/kurumsal_kayit', [PageController::class, 'kurumsal_reg'])->name('ku
 Route::get('/bireysel_kayit', [PageController::class, 'bireysel_reg'])->name('bireysel_reg');
 Route::get('/api/hizmet-ara', [PageController::class, 'hizmet_ara'])->name('hizmet_ara');
 Route::post('/iletisim-gonder', [PageController::class, 'iletisim_gonder'])->name('iletisim_gonder');
-Route::post('/bireysel_kayit', [PageController::class, 'bireysel_kayit'])->name('bireysel_kayit');
+
 Route::post('/kurumsal_kayit', [PageController::class, 'kurumsal_kayit'])->name('kurumsal_kayit');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/talep-gonder', [PageController::class, 'talep_gonder'])->name('talep_gonder');
     Route::get('/tekliflerim', [PageController::class, 'tekliflerim'])->name('tekliflerim');
-     Route::get('/talepler', [PageController::class, 'talepler'])->name('talepler');
+    Route::get('/talepler', [PageController::class, 'talepler'])->name('talepler');
     Route::get('/talepler/{id}', [PageController::class, 'talep_detay'])->name('talep_detay');
     Route::get('/hesabim', [PageController::class, 'hesabim'])->name('hesabim');
     Route::get('/firmam', [PageController::class, 'firmam'])->name('firmam');

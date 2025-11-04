@@ -34,6 +34,7 @@
                       $user = Auth::user();
                     @endphp
                     <h3 class="h5 mb-3">Hizmet Talep Formu</h3>
+                    <div id="formMessage" class="alert d-none mb-3" role="alert"></div>
                     <form class="row g-3" id="requestForm" novalidate>
                       <div class="col-12">
                         <label for="adSoyad" class="form-label">Ad Soyad</label>
@@ -49,22 +50,28 @@
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="kategori" class="form-label">Hizmet Kategorisi</label>
-                        <select id="kategori" class="form-select" required disabled>
+                        <select id="kategori" name="kategori" class="form-select" required  >
                           <option selected value="{{ $hizmetler->title }}">{{ $hizmetler->title }}</option>
                         </select>
                       </div>
                         <div class="col-12 col-md-6">
                         <label for="sehir" class="form-label">Şehir</label>
-                        <select id="sehir" class="form-select" required disabled>
+                        <select id="sehir" name="sehir" class="form-select" required  >
                           <option selected value="{{ $user->location ?? '' }}">{{ $user->location ?? 'Belirtilmemiş' }}</option>
                         </select>
                       </div>
                       <div class="col-12">
-                        <label for="mesaj" class="form-label">Açıklama</label>
-                        <textarea class="form-control" id="mesaj" rows="5" placeholder="İhtiyacınızı detaylandırın..." required ></textarea>
+                        <label for="mesaj" class="form-label">Açıklama <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="mesaj" name="mesaj" rows="5" placeholder="İhtiyacınızı detaylandırın..." required></textarea>
+                        <div class="invalid-feedback">
+                          Lütfen açıklama alanını doldurunuz.
+                        </div>
                       </div>
                       <div class="col-12 d-grid">
-                        <button type="submit" class="btn btn-primary" >Talep Gönder</button>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                          <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                          <span class="btn-text">Talep Gönder</span>
+                        </button>
                       </div>
                     </form>
                   @elseif($userRole === '2')
@@ -121,5 +128,97 @@
         </div>
       </div>
     </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('requestForm');
+    const formMessage = document.getElementById('formMessage');
+    const submitBtn = document.getElementById('submitBtn');
+    const mesajInput = document.getElementById('mesaj');
+
+    if (!form || !formMessage || !submitBtn || !mesajInput) return;
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Validasyon kontrolü
+        if (!mesajInput.value.trim()) {
+            mesajInput.classList.add('is-invalid');
+            showMessage('Lütfen açıklama alanını doldurunuz.', 'danger');
+            return;
+        }
+
+        mesajInput.classList.remove('is-invalid');
+
+        // Form verilerini hazırla - sadece mesaj, kategori ve şehir
+        const formData = new FormData();
+        formData.append('mesaj', mesajInput.value.trim());
+        formData.append('kategori', document.getElementById('kategori').value);
+        formData.append('sehir', document.getElementById('sehir').value);
+
+        // Submit butonunu devre dışı bırak
+        submitBtn.disabled = true;
+        const spinner = submitBtn.querySelector('.spinner-border');
+        const btnText = submitBtn.querySelector('.btn-text');
+        if (spinner) spinner.classList.remove('d-none');
+        if (btnText) btnText.textContent = 'Gönderiliyor...';
+
+        // AJAX isteği
+        fetch('{{ route("talep_gonder") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                'Accept': 'application/json',
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Başarılı - formu temizle ve gizle
+                form.reset();
+                form.style.display = 'none';
+                
+                // Başarı mesajını göster
+                showMessage(data.message, 'success');
+            } else {
+                // Hata mesajı
+                showMessage(data.message || 'Bir hata oluştu. Lütfen tekrar deneyin.', 'danger');
+                if (data.errors) {
+                    let errorText = '';
+                    for (const field in data.errors) {
+                        if (Array.isArray(data.errors[field])) {
+                            errorText += data.errors[field].join('<br>') + '<br>';
+                        }
+                    }
+                    if (errorText) {
+                        showMessage(errorText, 'danger');
+                    }
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('Bir hata oluştu. Lütfen tekrar deneyin.', 'danger');
+        })
+        .finally(() => {
+            // Submit butonunu tekrar aktif et
+            submitBtn.disabled = false;
+            if (spinner) spinner.classList.add('d-none');
+            if (btnText) btnText.textContent = 'Talep Gönder';
+        });
+    });
+
+    function showMessage(message, type) {
+        formMessage.textContent = '';
+        formMessage.className = 'alert alert-' + type + ' mb-3';
+        formMessage.innerHTML = message;
+        formMessage.classList.remove('d-none');
+        
+        // Scroll to message
+        formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+});
+</script>
 
 @endsection

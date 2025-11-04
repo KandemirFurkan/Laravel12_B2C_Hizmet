@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\ContactMail;
 use App\Models\Hizmetler;
 use App\Models\Slider;
+use App\Models\TalepForm;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -203,6 +204,7 @@ class PageController extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|max:255|unique:users,email',
                 'phone' => 'required|string|size:11',
+                'location' => 'required|string|max:255',
                 'password' => 'required|string|min:6',
             ]);
 
@@ -210,6 +212,7 @@ class PageController extends Controller
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'phone' => $validated['phone'],
+                'location' => $validated['location'],
                 'password' => Hash::make($validated['password']),
                 'registration_date' => now(),
                 'role' => 1,
@@ -304,5 +307,65 @@ class PageController extends Controller
     public function talepler()
     {
         return view('front.pages.talepler');
+    }
+
+    public function talep_gonder(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'mesaj' => 'required|string|min:10',
+                'kategori' => 'required|string|max:255',
+                'sehir' => 'required|string|max:255',
+            ]);
+
+            // Kullanıcı bilgilerini session'dan al
+            $user = Auth::user();
+
+            if (! $user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Oturum bulunamadı. Lütfen giriş yapın.',
+                ], 401);
+            }
+
+            // Kullanıcı bilgilerini veritabanından çek
+            $user = User::find($user->id);
+
+            if (! $user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Kullanıcı bulunamadı.',
+                ], 404);
+            }
+
+            // Talep formunu kaydet
+            TalepForm::create([
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'sector' => $validated['kategori'],
+                'location' => $validated['sehir'],
+                'message' => $validated['mesaj'],
+                'ip_address' => $request->ip(),
+                'user_id' => (string) $user->id,
+                'status' => '0',
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Talebiniz başarıyla gönderildi! En kısa sürede size dönüş yapacağız.',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lütfen tüm alanları doğru şekilde doldurun.',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Talep gönderilirken bir hata oluştu. Lütfen tekrar deneyin.',
+            ], 500);
+        }
     }
 }
