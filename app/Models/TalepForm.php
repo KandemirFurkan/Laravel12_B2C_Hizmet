@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TalepForm extends Model
 {
@@ -17,4 +18,9 @@ class TalepForm extends Model
         'user_id',
         'status',
     ];
+
+    public function hizmet(): BelongsTo
+    {
+        return $this->belongsTo(Hizmetler::class, 'sector', 'id');
+    }
 }

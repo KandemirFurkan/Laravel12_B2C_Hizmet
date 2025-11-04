@@ -362,3 +362,56 @@ footer .footer-social:hover { color: var(--board-primary); }
   background-color: #0d6efd;
   color: white;
 }
+.offer-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+.offer-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+.offer-card.selected {
+  border-color: #0d6efd;
+  background: linear-gradient(135deg, rgba(13, 110, 253, 0.05) 0%, rgba(13, 110, 253, 0.02) 100%);
+}
+.offer-card.selected .badge {
+  background-color: #0d6efd;
+  color: white;
+}
+.form-details-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+.price-display {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #198754;
+}
+.company-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}
+.form-detail-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+.form-detail-item:last-child {
+  border-bottom: none;
+}
+.form-detail-label {
+  font-weight: 600;
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+.form-detail-value {
+  color: #212529;
+  font-size: 1rem;
+}
+.selected-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}

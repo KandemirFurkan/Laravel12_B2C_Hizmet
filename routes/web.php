@@ -22,6 +22,7 @@ Route::post('/kurumsal_kayit', [PageController::class, 'kurumsal_kayit'])->name(
 Route::middleware('auth')->group(function () {
     Route::post('/talep-gonder', [PageController::class, 'talep_gonder'])->name('talep_gonder');
     Route::get('/tekliflerim', [PageController::class, 'tekliflerim'])->name('tekliflerim');
+    Route::get('/tekliflerim/{id}', [PageController::class, 'teklif_detay'])->name('teklif_detay');
     Route::get('/talepler', [PageController::class, 'talepler'])->name('talepler');
     Route::get('/talepler/{id}', [PageController::class, 'talep_detay'])->name('talep_detay');
     Route::get('/hesabim', [PageController::class, 'hesabim'])->name('hesabim');

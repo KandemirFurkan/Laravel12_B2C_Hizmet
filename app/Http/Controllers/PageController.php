@@ -294,20 +294,22 @@ class PageController extends Controller
     public function tekliflerim()
     {
         $talepler = TalepForm::where('user_id', Auth::id())
-        ->where('status', 1)
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->where('status', 1)
+            ->with('hizmet')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('front.pages.tekliflerim', compact('talepler'));
     }
 
-    public function teklif_detay(Request $request)
+    public function teklif_detay($id)
     {
+        $talep = TalepForm::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->with('hizmet')
+            ->firstOrFail();
 
-        $id = $request->query('id'); // GET parametresini alır
-
-        // $teklif = Teklif::find($id);
-        return view('front.pages.teklif_detay', compact('id'));
+        return view('front.pages.teklif_detay', compact('talep'));
     }
 
     public function talepler()

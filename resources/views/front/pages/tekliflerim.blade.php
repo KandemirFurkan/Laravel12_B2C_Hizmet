@@ -8,11 +8,18 @@
       <div class="container">
         <div class="row align-items-center">
           <div class="col-12 col-md-3 text-center text-md-start mb-3 mb-md-0">
-            <img src="https://placehold.co/120x120/667eea/ffffff?text={{ Auth::user()->name }}" alt="Profil Fotoğrafı" class="profile-avatar" id="profileAvatar">
-            <div class="mt-3">
+          @php
+    $nameParts = explode(' ', Auth::user()->name);
+    $initials = '';
+    foreach ($nameParts as $part) {
+        $initials .= strtoupper(mb_substr($part, 0, 1));
+    }
+@endphp
 
-              <input type="file" id="avatarUpload" class="d-none" accept="image/*" onchange="previewAvatar(event)">
-            </div>
+<img src="https://placehold.co/120x120/667eea/ffffff?text={{ $initials }}" alt="Profil Fotoğrafı" class="profile-avatar" id="profileAvatar">
+  <div class="mt-3">
+
+                </div>
           </div>
           <div class="col-12 col-md-9">
             <h1 class="h3 mb-2">{{ Auth::user()->name }}</h1>
@@ -60,14 +67,14 @@
               <div class="card-body">
                 <div class="d-flex align-items-start gap-3 mb-3">
                   <div class="category-icon bg-primary bg-opacity-10 text-primary">
-                    🧹
+                    *
                   </div>
                   <div class="flex-grow-1">
                     <div class="d-flex justify-content-between align-items-start mb-2">
-                      <span class="badge category-badge bg-primary">{{$talep->sector}}</span>
+                      <span class="badge category-badge bg-primary">{{$talep->hizmet?->title ?? $talep->sector}}</span>
                       <span class="badge status-badge bg-warning text-dark">Teklif Bekliyor</span>
                     </div>
-                    <h5 class="card-title mb-2">{{$talep->sector}} Talebi</h5>
+                    <h5 class="card-title mb-2">{{$talep->hizmet?->title ?? $talep->sector}} Talebi</h5>
                     <p class="form-preview mb-3">
                       {{$talep->message}}
                     </p>
@@ -96,7 +103,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                   <small class="text-muted">
                     <i class="bi bi-file-text me-1"></i>
-                    <a href="#">Detayları görüntüle →</a>
+                    <a href="{{ route('teklif_detay', $talep->id) }}">Detayları görüntüle →</a>
                   </small>
                 </div>
               </div>
