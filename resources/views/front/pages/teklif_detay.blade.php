@@ -11,7 +11,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{route('anasayfa')}}">Ana Sayfa</a></li>
-            <li class="breadcrumb-item"><a href="{{route('tekliflerim')}}">Talepler</a></li>
+            <li class="breadcrumb-item"><a href="list.html">Talepler</a></li>
             <li class="breadcrumb-item active" aria-current="page">Teklif Seçimi</li>
           </ol>
         </nav>

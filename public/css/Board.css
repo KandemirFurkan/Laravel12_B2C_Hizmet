@@ -415,3 +415,53 @@ footer .footer-social:hover { color: var(--board-primary); }
   top: 1rem;
   right: 1rem;
 }
+
+.detail-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.info-row {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+.info-row:last-child {
+  border-bottom: none;
+}
+.info-label {
+  font-weight: 600;
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+.info-value {
+  color: #212529;
+  font-size: 1rem;
+}
+.offer-form-card {
+  position: sticky;
+  top: 100px;
+}
+.price-input-group {
+  position: relative;
+}
+.price-input-group::before {
+  content: "₺";
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+  font-weight: 600;
+  z-index: 10;
+}
+.price-input-group input {
+  padding-left: 30px;
+}
+.back-button {
+  text-decoration: none;
+  color: #0d6efd;
+}
+.back-button:hover {
+  color: #0b5ed7;
+}

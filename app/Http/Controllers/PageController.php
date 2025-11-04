@@ -9,9 +9,11 @@ use App\Models\ContactMail;
 use App\Models\Hizmetler;
 use App\Models\Slider;
 use App\Models\TalepForm;
+use App\Models\teklifler;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
 
@@ -314,7 +316,125 @@ class PageController extends Controller
 
     public function talepler()
     {
-        return view('front.pages.talepler');
+        $talepler = TalepForm::where('status', 1)
+            ->with('hizmet')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Her talep için teklif sayısını ve kullanıcının teklif durumunu ekle
+        $talepler->each(function ($talep) {
+            $talep->teklif_sayisi = teklifler::where('talep_id', $talep->id)->count();
+            if (Auth::check()) {
+                $talep->kullanici_teklif_verdi = teklifler::where('talep_id', $talep->id)
+                    ->where('user_id', Auth::id())
+                    ->exists();
+            } else {
+                $talep->kullanici_teklif_verdi = false;
+            }
+        });
+
+        return view('front.pages.talepler', compact('talepler'));
+    }
+
+    public function talep_detay($id)
+    {
+        $talep = TalepForm::where('id', $id)
+            ->where('status', 1)
+            ->with('hizmet')
+            ->firstOrFail();
+
+        $encryptedTalepId = Crypt::encryptString($talep->id);
+        $encryptedUserId = Crypt::encryptString($talep->user_id);
+        $teklifSayisi = teklifler::where('talep_id', $talep->id)->count();
+
+        // Mevcut kullanıcının bu talep için teklifi var mı kontrol et
+        $mevcutTeklif = null;
+        if (Auth::check()) {
+            $mevcutTeklif = teklifler::where('talep_id', $talep->id)
+                ->where('user_id', Auth::id())
+                ->first();
+        }
+
+        return view('front.pages.talep_detay', compact('talep', 'encryptedTalepId', 'encryptedUserId', 'teklifSayisi', 'mevcutTeklif'));
+    }
+
+    public function teklif_gonder(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'T' => 'required|string',
+                'U' => 'required|string',
+                'offerPrice' => 'required|numeric|min:0',
+                'offerDescription' => 'required|string|min:10',
+            ]);
+
+            // Şifreli değerleri çöz
+            $talepId = Crypt::decryptString($validated['T']);
+            $talepEdenUserId = Crypt::decryptString($validated['U']);
+
+            // Teklif eden kullanıcı kontrolü
+            $teklifEdenUser = Auth::user();
+            if (! $teklifEdenUser) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Oturum bulunamadı. Lütfen giriş yapın.',
+                ], 401);
+            }
+
+            // Talep kontrolü
+            $talep = TalepForm::where('id', $talepId)
+                ->where('status', 1)
+                ->firstOrFail();
+
+            // Aynı kullanıcının aynı talep için daha önce teklif verip vermediğini kontrol et
+            $existingTeklif = teklifler::where('talep_id', $talepId)
+                ->where('user_id', $teklifEdenUser->id)
+                ->first();
+
+            if ($existingTeklif) {
+                // Mevcut teklifi güncelle
+                $existingTeklif->update([
+                    'price' => $validated['offerPrice'],
+                    'description' => $validated['offerDescription'],
+                    'status' => 'pending',
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Teklifiniz başarıyla güncellendi!',
+                ]);
+            }
+
+            // Yeni teklifi kaydet
+            teklifler::create([
+                'talep_id' => $talepId,
+                'user_id' => $teklifEdenUser->id,
+                'price' => $validated['offerPrice'],
+                'description' => $validated['offerDescription'],
+                'status' => 'pending',
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Teklifiniz başarıyla gönderildi!',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lütfen tüm alanları doğru şekilde doldurun.',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Geçersiz veri. Lütfen sayfayı yenileyin.',
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Teklif gönderilirken bir hata oluştu. Lütfen tekrar deneyin.',
+            ], 500);
+        }
     }
 
     public function talep_gonder(Request $request): \Illuminate\Http\JsonResponse
