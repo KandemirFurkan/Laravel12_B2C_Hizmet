@@ -45,7 +45,7 @@
                     @elseif($userRole === '2')
                       {{-- Role 2: Kurumsal Kullanıcı --}}
                       <li><a class="dropdown-item" href="{{route('talepler')}}">Teklifler</a></li>
-                      <li><a class="dropdown-item" href="#">Firma Ayarları</a></li>
+                      <li><a class="dropdown-item" href="{{route('firma_ayarlari')}}">Firma Ayarları</a></li>
                     @endif
                     <li><hr class="dropdown-divider"></li>
                     <li>

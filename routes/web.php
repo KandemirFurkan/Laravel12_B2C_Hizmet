@@ -28,4 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/talepler/{id}', [PageController::class, 'talep_detay'])->name('talep_detay');
     Route::get('/hesabim', [PageController::class, 'hesabim'])->name('hesabim');
     Route::get('/firmam', [PageController::class, 'firmam'])->name('firmam');
+    Route::get('/firma_ayarlari', [PageController::class, 'firma_ayarlari'])->name('firma_ayarlari');
+    Route::post('/firma-bilgi-guncelle', [PageController::class, 'firma_bilgi_guncelle'])->name('firma_bilgi_guncelle');
+    Route::post('/sifre-guncelle', [PageController::class, 'sifre_guncelle'])->name('sifre_guncelle');
+
 });

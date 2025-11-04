@@ -77,7 +77,7 @@
                   <div class="row text-center">
                     <div class="col-4">
                       <div class="text-muted small">Talep Tarihi</div>
-                      <div class="fw-bold small">{{ $talep->created_at->format('d M') }}</div>
+                      <div class="fw-bold small">{{ $talep->created_at->locale('tr')->translatedFormat('d F Y') }}</div>
                     </div>
                     <div class="col-4">
                       <div class="text-muted small">Teklif Sayısı</div>

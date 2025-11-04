@@ -496,4 +496,85 @@ class PageController extends Controller
             ], 500);
         }
     }
+
+    public function firma_ayarlari()
+    {
+        return view('front.pages.firma_ayarlari');
+    }
+
+    public function firma_bilgi_guncelle(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'phone' => 'required|string|size:11',
+                'email' => 'required|email|max:255|unique:users,email,'.Auth::id(),
+                'content' => 'nullable|string',
+            ]);
+
+            $user = Auth::user();
+            $user->update([
+                'phone' => $validated['phone'],
+                'email' => $validated['email'],
+                'content' => $validated['content'] ?? $user->content,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Firma bilgileri başarıyla güncellendi.',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lütfen tüm alanları doğru şekilde doldurun.',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Bilgiler güncellenirken bir hata oluştu. Lütfen tekrar deneyin.',
+            ], 500);
+        }
+    }
+
+    public function sifre_guncelle(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'mevcutSifre' => 'required|string',
+                'yeniSifre' => 'required|string|min:8',
+                'yeniSifreTekrar' => 'required|string|same:yeniSifre',
+            ]);
+
+            $user = Auth::user();
+
+            // Mevcut şifre kontrolü
+            if (! Hash::check($validated['mevcutSifre'], $user->password)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Mevcut şifre hatalı.',
+                ], 422);
+            }
+
+            // Yeni şifreyi güncelle
+            $user->update([
+                'password' => Hash::make($validated['yeniSifre']),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Şifre başarıyla güncellendi.',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lütfen tüm alanları doğru şekilde doldurun.',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Şifre güncellenirken bir hata oluştu. Lütfen tekrar deneyin.',
+            ], 500);
+        }
+    }
 }
