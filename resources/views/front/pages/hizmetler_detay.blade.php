@@ -50,14 +50,96 @@
                       </div>
                       <div class="col-12 col-md-6">
                         <label for="kategori" class="form-label">Hizmet Kategorisi</label>
-                        <select id="kategori" name="kategori" class="form-select" required  >
-                          <option selected value="{{ $hizmetler->title }}">{{ $hizmetler->title }}</option>
+                        <select id="kategori" name="kategori" class="form-select" required >
+                          @foreach($sectors as $sector)
+                            <option value="{{ $sector->title }}" {{ $sector->title === $hizmetler->title ? 'selected' : '' }}>{{ $sector->title }}</option>
+                          @endforeach
                         </select>
                       </div>
                         <div class="col-12 col-md-6">
                         <label for="sehir" class="form-label">Şehir</label>
-                        <select id="sehir" name="sehir" class="form-select" required  >
-                          <option selected value="{{ $user->location ?? '' }}">{{ $user->location ?? 'Belirtilmemiş' }}</option>
+                        <select id="sehir" name="sehir" class="form-select" required >
+                          <option value="Adana" {{ ($user->location ?? '') === 'Adana' ? 'selected' : '' }}>Adana</option>
+                          <option value="Adıyaman" {{ ($user->location ?? '') === 'Adıyaman' ? 'selected' : '' }}>Adıyaman</option>
+                          <option value="Afyonkarahisar" {{ ($user->location ?? '') === 'Afyonkarahisar' ? 'selected' : '' }}>Afyonkarahisar</option>
+                          <option value="Ağrı" {{ ($user->location ?? '') === 'Ağrı' ? 'selected' : '' }}>Ağrı</option>
+                          <option value="Aksaray" {{ ($user->location ?? '') === 'Aksaray' ? 'selected' : '' }}>Aksaray</option>
+                          <option value="Amasya" {{ ($user->location ?? '') === 'Amasya' ? 'selected' : '' }}>Amasya</option>
+                          <option value="Ankara" {{ ($user->location ?? '') === 'Ankara' ? 'selected' : '' }}>Ankara</option>
+                          <option value="Antalya" {{ ($user->location ?? '') === 'Antalya' ? 'selected' : '' }}>Antalya</option>
+                          <option value="Ardahan" {{ ($user->location ?? '') === 'Ardahan' ? 'selected' : '' }}>Ardahan</option>
+                          <option value="Artvin" {{ ($user->location ?? '') === 'Artvin' ? 'selected' : '' }}>Artvin</option>
+                          <option value="Aydın" {{ ($user->location ?? '') === 'Aydın' ? 'selected' : '' }}>Aydın</option>
+                          <option value="Balıkesir" {{ ($user->location ?? '') === 'Balıkesir' ? 'selected' : '' }}>Balıkesir</option>
+                          <option value="Bartın" {{ ($user->location ?? '') === 'Bartın' ? 'selected' : '' }}>Bartın</option>
+                          <option value="Batman" {{ ($user->location ?? '') === 'Batman' ? 'selected' : '' }}>Batman</option>
+                          <option value="Bayburt" {{ ($user->location ?? '') === 'Bayburt' ? 'selected' : '' }}>Bayburt</option>
+                          <option value="Bilecik" {{ ($user->location ?? '') === 'Bilecik' ? 'selected' : '' }}>Bilecik</option>
+                          <option value="Bingöl" {{ ($user->location ?? '') === 'Bingöl' ? 'selected' : '' }}>Bingöl</option>
+                          <option value="Bitlis" {{ ($user->location ?? '') === 'Bitlis' ? 'selected' : '' }}>Bitlis</option>
+                          <option value="Bolu" {{ ($user->location ?? '') === 'Bolu' ? 'selected' : '' }}>Bolu</option>
+                          <option value="Burdur" {{ ($user->location ?? '') === 'Burdur' ? 'selected' : '' }}>Burdur</option>
+                          <option value="Bursa" {{ ($user->location ?? '') === 'Bursa' ? 'selected' : '' }}>Bursa</option>
+                          <option value="Çanakkale" {{ ($user->location ?? '') === 'Çanakkale' ? 'selected' : '' }}>Çanakkale</option>
+                          <option value="Çankırı" {{ ($user->location ?? '') === 'Çankırı' ? 'selected' : '' }}>Çankırı</option>
+                          <option value="Çorum" {{ ($user->location ?? '') === 'Çorum' ? 'selected' : '' }}>Çorum</option>
+                          <option value="Denizli" {{ ($user->location ?? '') === 'Denizli' ? 'selected' : '' }}>Denizli</option>
+                          <option value="Diyarbakır" {{ ($user->location ?? '') === 'Diyarbakır' ? 'selected' : '' }}>Diyarbakır</option>
+                          <option value="Düzce" {{ ($user->location ?? '') === 'Düzce' ? 'selected' : '' }}>Düzce</option>
+                          <option value="Edirne" {{ ($user->location ?? '') === 'Edirne' ? 'selected' : '' }}>Edirne</option>
+                          <option value="Elazığ" {{ ($user->location ?? '') === 'Elazığ' ? 'selected' : '' }}>Elazığ</option>
+                          <option value="Erzincan" {{ ($user->location ?? '') === 'Erzincan' ? 'selected' : '' }}>Erzincan</option>
+                          <option value="Erzurum" {{ ($user->location ?? '') === 'Erzurum' ? 'selected' : '' }}>Erzurum</option>
+                          <option value="Eskişehir" {{ ($user->location ?? '') === 'Eskişehir' ? 'selected' : '' }}>Eskişehir</option>
+                          <option value="Gaziantep" {{ ($user->location ?? '') === 'Gaziantep' ? 'selected' : '' }}>Gaziantep</option>
+                          <option value="Giresun" {{ ($user->location ?? '') === 'Giresun' ? 'selected' : '' }}>Giresun</option>
+                          <option value="Gümüşhane" {{ ($user->location ?? '') === 'Gümüşhane' ? 'selected' : '' }}>Gümüşhane</option>
+                          <option value="Hakkari" {{ ($user->location ?? '') === 'Hakkari' ? 'selected' : '' }}>Hakkari</option>
+                          <option value="Hatay" {{ ($user->location ?? '') === 'Hatay' ? 'selected' : '' }}>Hatay</option>
+                          <option value="Iğdır" {{ ($user->location ?? '') === 'Iğdır' ? 'selected' : '' }}>Iğdır</option>
+                          <option value="Isparta" {{ ($user->location ?? '') === 'Isparta' ? 'selected' : '' }}>Isparta</option>
+                          <option value="İstanbul" {{ ($user->location ?? '') === 'İstanbul' ? 'selected' : '' }}>İstanbul</option>
+                          <option value="İzmir" {{ ($user->location ?? '') === 'İzmir' ? 'selected' : '' }}>İzmir</option>
+                          <option value="Kahramanmaraş" {{ ($user->location ?? '') === 'Kahramanmaraş' ? 'selected' : '' }}>Kahramanmaraş</option>
+                          <option value="Karabük" {{ ($user->location ?? '') === 'Karabük' ? 'selected' : '' }}>Karabük</option>
+                          <option value="Karaman" {{ ($user->location ?? '') === 'Karaman' ? 'selected' : '' }}>Karaman</option>
+                          <option value="Kars" {{ ($user->location ?? '') === 'Kars' ? 'selected' : '' }}>Kars</option>
+                          <option value="Kastamonu" {{ ($user->location ?? '') === 'Kastamonu' ? 'selected' : '' }}>Kastamonu</option>
+                          <option value="Kayseri" {{ ($user->location ?? '') === 'Kayseri' ? 'selected' : '' }}>Kayseri</option>
+                          <option value="Kilis" {{ ($user->location ?? '') === 'Kilis' ? 'selected' : '' }}>Kilis</option>
+                          <option value="Kırıkkale" {{ ($user->location ?? '') === 'Kırıkkale' ? 'selected' : '' }}>Kırıkkale</option>
+                          <option value="Kırklareli" {{ ($user->location ?? '') === 'Kırklareli' ? 'selected' : '' }}>Kırklareli</option>
+                          <option value="Kırşehir" {{ ($user->location ?? '') === 'Kırşehir' ? 'selected' : '' }}>Kırşehir</option>
+                          <option value="Kocaeli" {{ ($user->location ?? '') === 'Kocaeli' ? 'selected' : '' }}>Kocaeli</option>
+                          <option value="Konya" {{ ($user->location ?? '') === 'Konya' ? 'selected' : '' }}>Konya</option>
+                          <option value="Kütahya" {{ ($user->location ?? '') === 'Kütahya' ? 'selected' : '' }}>Kütahya</option>
+                          <option value="Malatya" {{ ($user->location ?? '') === 'Malatya' ? 'selected' : '' }}>Malatya</option>
+                          <option value="Manisa" {{ ($user->location ?? '') === 'Manisa' ? 'selected' : '' }}>Manisa</option>
+                          <option value="Mardin" {{ ($user->location ?? '') === 'Mardin' ? 'selected' : '' }}>Mardin</option>
+                          <option value="Mersin" {{ ($user->location ?? '') === 'Mersin' ? 'selected' : '' }}>Mersin</option>
+                          <option value="Muğla" {{ ($user->location ?? '') === 'Muğla' ? 'selected' : '' }}>Muğla</option>
+                          <option value="Muş" {{ ($user->location ?? '') === 'Muş' ? 'selected' : '' }}>Muş</option>
+                          <option value="Nevşehir" {{ ($user->location ?? '') === 'Nevşehir' ? 'selected' : '' }}>Nevşehir</option>
+                          <option value="Niğde" {{ ($user->location ?? '') === 'Niğde' ? 'selected' : '' }}>Niğde</option>
+                          <option value="Ordu" {{ ($user->location ?? '') === 'Ordu' ? 'selected' : '' }}>Ordu</option>
+                          <option value="Osmaniye" {{ ($user->location ?? '') === 'Osmaniye' ? 'selected' : '' }}>Osmaniye</option>
+                          <option value="Rize" {{ ($user->location ?? '') === 'Rize' ? 'selected' : '' }}>Rize</option>
+                          <option value="Sakarya" {{ ($user->location ?? '') === 'Sakarya' ? 'selected' : '' }}>Sakarya</option>
+                          <option value="Samsun" {{ ($user->location ?? '') === 'Samsun' ? 'selected' : '' }}>Samsun</option>
+                          <option value="Siirt" {{ ($user->location ?? '') === 'Siirt' ? 'selected' : '' }}>Siirt</option>
+                          <option value="Sinop" {{ ($user->location ?? '') === 'Sinop' ? 'selected' : '' }}>Sinop</option>
+                          <option value="Sivas" {{ ($user->location ?? '') === 'Sivas' ? 'selected' : '' }}>Sivas</option>
+                          <option value="Şanlıurfa" {{ ($user->location ?? '') === 'Şanlıurfa' ? 'selected' : '' }}>Şanlıurfa</option>
+                          <option value="Şırnak" {{ ($user->location ?? '') === 'Şırnak' ? 'selected' : '' }}>Şırnak</option>
+                          <option value="Tekirdağ" {{ ($user->location ?? '') === 'Tekirdağ' ? 'selected' : '' }}>Tekirdağ</option>
+                          <option value="Tokat" {{ ($user->location ?? '') === 'Tokat' ? 'selected' : '' }}>Tokat</option>
+                          <option value="Trabzon" {{ ($user->location ?? '') === 'Trabzon' ? 'selected' : '' }}>Trabzon</option>
+                          <option value="Tunceli" {{ ($user->location ?? '') === 'Tunceli' ? 'selected' : '' }}>Tunceli</option>
+                          <option value="Uşak" {{ ($user->location ?? '') === 'Uşak' ? 'selected' : '' }}>Uşak</option>
+                          <option value="Van" {{ ($user->location ?? '') === 'Van' ? 'selected' : '' }}>Van</option>
+                          <option value="Yalova" {{ ($user->location ?? '') === 'Yalova' ? 'selected' : '' }}>Yalova</option>
+                          <option value="Yozgat" {{ ($user->location ?? '') === 'Yozgat' ? 'selected' : '' }}>Yozgat</option>
+                          <option value="Zonguldak" {{ ($user->location ?? '') === 'Zonguldak' ? 'selected' : '' }}>Zonguldak</option>
                         </select>
                       </div>
                       <div class="col-12">

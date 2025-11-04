@@ -47,6 +47,7 @@ class PageController extends Controller
     public function hizmetler_detay($slug)
     {
         $hizmetler = Hizmetler::where('slug', $slug)->where('status', 1)->firstOrFail();
+        $sectors = Hizmetler::where('status', 1)->orderBy('title')->get();
 
         View::share('pageTitle', $hizmetler->title);
         View::share('breadcrumbList', [
@@ -54,7 +55,7 @@ class PageController extends Controller
             ['title' => $hizmetler->title, 'url' => '#'],
         ]);
 
-        return view('front.pages.hizmetler_detay', compact('hizmetler'));
+        return view('front.pages.hizmetler_detay', compact('hizmetler', 'sectors'));
     }
 
     public function blog()
