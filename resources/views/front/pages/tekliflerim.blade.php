@@ -63,51 +63,61 @@
           <!-- Form 1: Temizlik -->
            @foreach($talepler as $talep)
           <div class="col-12 col-md-6 col-lg-4">
-            <div class="card form-card shadow-sm h-100" >
-              <div class="card-body">
-                <div class="d-flex align-items-start gap-3 mb-3">
-                  <div class="category-icon bg-primary bg-opacity-10 text-primary">
-                    *
-                  </div>
-                  <div class="flex-grow-1">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                      <span class="badge category-badge bg-primary">{{$talep->hizmet?->title ?? $talep->sector}}</span>
-                      <span class="badge status-badge bg-warning text-dark">Teklif Bekliyor</span>
+            <a href="{{ route('teklif_detay', $talep->id) }}" class="text-decoration-none">
+              <div class="card form-card shadow-sm h-100" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                <div class="card-body">
+                  <div class="d-flex align-items-start gap-3 mb-3">
+                    <div class="category-icon bg-primary bg-opacity-10 text-primary">
+                      *
                     </div>
-                    <h5 class="card-title mb-2">{{$talep->hizmet?->title ?? $talep->sector}} Talebi</h5>
-                    <p class="form-preview mb-3">
-                      {{$talep->message}}
-                    </p>
+                    <div class="flex-grow-1">
+                      <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="badge category-badge bg-primary">{{$talep->hizmet?->title ?? $talep->sector}}</span>
+                        @if($talep->teklif_sayisi > 0)
+                          <span class="badge status-badge bg-success">{{$talep->teklif_sayisi}} Teklif Var</span>
+                        @else
+                          <span class="badge status-badge bg-warning text-dark">Teklif Bekliyor</span>
+                        @endif
+                      </div>
+                      <h5 class="card-title mb-2 text-dark">{{$talep->hizmet?->title ?? $talep->sector}} Talebi</h5>
+                      <p class="form-preview mb-3 text-muted">
+                        {{$talep->message}}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="border-top pt-3">
+                    <div class="row text-center">
+                      <div class="col-4">
+                        <div class="text-muted fw-bold">{{$talep->teklif_sayisi ?? 0}}</div>
+                        <small class="text-muted">Teklif</small>
+                      </div>
+                      <div class="col-4">
+                        <div class="text-muted fw-bold">{{$talep->created_at->format('d-m-Y')}}</div>
+                        <small class="text-muted">Talep Tarihi</small>
+                      </div>
+                    
+                      <div class="col-4">
+                        @if($talep->teklif_sayisi > 0 && $talep->min_teklif && $talep->max_teklif)
+                          <div class="text-muted fw-bold">₺{{number_format($talep->min_teklif, 0, ',', '.')}}-₺{{number_format($talep->max_teklif, 0, ',', '.')}}</div>
+                        @else
+                          <div class="text-muted fw-bold">-</div>
+                        @endif
+                        <small class="text-muted">Fiyat Aralığı</small>
+                      </div>
+ 
+                    </div>
                   </div>
                 </div>
-                <div class="border-top pt-3">
-                  <div class="row text-center">
-                    <div class="col-4">
-                      <div class="offer-count">0</div>
-                      <small class="text-muted">Teklif</small>
-                    </div>
-                    <div class="col-4">
-                      <div class="text-muted fw-bold">{{$talep->created_at->format('d-m-Y')}}</div>
-                      <small class="text-muted">Talep Tarihi</small>
-                    </div>
-                    <!--
-                    <div class="col-4">
-                      <div class="text-muted fw-bold">₺950-₺1.500</div>
-                      <small class="text-muted">Fiyat Aralığı</small>
-                    </div>
--->
+                <div class="card-footer bg-transparent border-top-0">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">
+                      <i class="bi bi-file-text me-1"></i>
+                      Detayları görüntüle →
+                    </small>
                   </div>
                 </div>
               </div>
-              <div class="card-footer bg-transparent border-top-0">
-                <div class="d-flex justify-content-between align-items-center">
-                  <small class="text-muted">
-                    <i class="bi bi-file-text me-1"></i>
-                    <a href="{{ route('teklif_detay', $talep->id) }}">Detayları görüntüle →</a>
-                  </small>
-                </div>
-              </div>
-            </div>
+            </a>
           </div>
           @endforeach
 

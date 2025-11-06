@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->decimal('price', 10, 2);
             $table->text('description');
-            $table->string('status')->default('pending');
+            $table->string('status')->default('0');
             $table->timestamps();
         });
     }

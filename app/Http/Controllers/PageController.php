@@ -301,6 +301,20 @@ class PageController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        // Her talep için teklif sayısını ve fiyat aralığını ekle
+        $talepler->each(function ($talep) {
+            $teklifler = teklifler::where('talep_id', $talep->id)->get();
+            $talep->teklif_sayisi = $teklifler->count();
+            
+            if ($talep->teklif_sayisi > 0) {
+                $talep->min_teklif = $teklifler->min('price');
+                $talep->max_teklif = $teklifler->max('price');
+            } else {
+                $talep->min_teklif = null;
+                $talep->max_teklif = null;
+            }
+        });
+
         return view('front.pages.tekliflerim', compact('talepler'));
     }
 
@@ -311,7 +325,15 @@ class PageController extends Controller
             ->with('hizmet')
             ->firstOrFail();
 
-        return view('front.pages.teklif_detay', compact('talep'));
+        $teklifler = teklifler::where('talep_id', $talep->id)
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $teklifSayisi = $teklifler->count();
+        $onaylananTeklif = $teklifler->where('status', '1')->first();
+
+        return view('front.pages.teklif_detay', compact('talep', 'teklifler', 'teklifSayisi', 'onaylananTeklif'));
     }
 
     public function talepler()
@@ -396,7 +418,7 @@ class PageController extends Controller
                 $existingTeklif->update([
                     'price' => $validated['offerPrice'],
                     'description' => $validated['offerDescription'],
-                    'status' => 'pending',
+                    'status' => '0',
                 ]);
 
                 return response()->json([
@@ -411,7 +433,7 @@ class PageController extends Controller
                 'user_id' => $teklifEdenUser->id,
                 'price' => $validated['offerPrice'],
                 'description' => $validated['offerDescription'],
-                'status' => 'pending',
+                'status' => '0',
             ]);
 
             return response()->json([
@@ -574,6 +596,46 @@ class PageController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Şifre güncellenirken bir hata oluştu. Lütfen tekrar deneyin.',
+            ], 500);
+        }
+    }
+
+    public function teklif_onayla(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'teklif_id' => 'required|integer|exists:tekliflers,id',
+                'talep_id' => 'required|integer|exists:talep_forms,id',
+            ]);
+
+            $talep = TalepForm::where('id', $validated['talep_id'])
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
+
+            $teklif = teklifler::where('id', $validated['teklif_id'])
+                ->where('talep_id', $validated['talep_id'])
+                ->firstOrFail();
+
+            // Teklifin status'unu 1 yap
+            $teklif->update(['status' => '1']);
+
+            // Talep formunun status'unu 2 yap
+            $talep->update(['status' => '2']);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Teklif başarıyla onaylandı!',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lütfen tüm alanları doğru şekilde doldurun.',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Teklif onaylanırken bir hata oluştu. Lütfen tekrar deneyin.',
             ], 500);
         }
     }
