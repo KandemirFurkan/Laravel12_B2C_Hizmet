@@ -41,7 +41,7 @@
                     @if($userRole === '1')
                       {{-- Role 1: Bireysel Kullanıcı --}}
                       <li><a class="dropdown-item" href="{{route('tekliflerim')}}">Talepler</a></li>
-                      <li><a class="dropdown-item" href="#">Hesap Ayarları</a></li>
+                      <li><a class="dropdown-item" href="{{route('hesap_ayarlari')}}">Hesap Ayarları</a></li>
                     @elseif($userRole === '2')
                       {{-- Role 2: Kurumsal Kullanıcı --}}
                       <li><a class="dropdown-item" href="{{route('talepler')}}">Teklifler</a></li>

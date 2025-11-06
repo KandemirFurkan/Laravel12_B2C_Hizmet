@@ -73,7 +73,9 @@
                     <div class="flex-grow-1">
                       <div class="d-flex justify-content-between align-items-start mb-2">
                         <span class="badge category-badge bg-primary">{{$talep->hizmet?->title ?? $talep->sector}}</span>
-                        @if($talep->teklif_sayisi > 0)
+                        @if($talep->status == 2)
+                          <span class="badge status-badge bg-info text-white">Teklif Kabul Edildi</span>
+                        @elseif($talep->teklif_sayisi > 0)
                           <span class="badge status-badge bg-success">{{$talep->teklif_sayisi}} Teklif Var</span>
                         @else
                           <span class="badge status-badge bg-warning text-dark">Teklif Bekliyor</span>

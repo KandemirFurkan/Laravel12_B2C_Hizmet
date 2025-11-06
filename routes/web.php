@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/hesabim', [PageController::class, 'hesabim'])->name('hesabim');
     Route::get('/firmam', [PageController::class, 'firmam'])->name('firmam');
     Route::get('/firma_ayarlari', [PageController::class, 'firma_ayarlari'])->name('firma_ayarlari');
+    Route::get('/hesap_ayarlari', [PageController::class, 'hesap_ayarlari'])->name('hesap_ayarlari');
+    Route::post('/hesap-bilgi-guncelle', [PageController::class, 'hesap_bilgi_guncelle'])->name('hesap_bilgi_guncelle');
     Route::post('/firma-bilgi-guncelle', [PageController::class, 'firma_bilgi_guncelle'])->name('firma_bilgi_guncelle');
     Route::post('/sifre-guncelle', [PageController::class, 'sifre_guncelle'])->name('sifre_guncelle');
 

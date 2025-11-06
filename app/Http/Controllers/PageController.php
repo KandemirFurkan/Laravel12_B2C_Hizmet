@@ -296,7 +296,7 @@ class PageController extends Controller
     public function tekliflerim()
     {
         $talepler = TalepForm::where('user_id', Auth::id())
-            ->where('status', 1)
+            ->where('status', '>', 0)
             ->with('hizmet')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -524,6 +524,13 @@ class PageController extends Controller
         return view('front.pages.firma_ayarlari');
     }
 
+    public function hesap_ayarlari()
+    {
+        $user = Auth::user();
+
+        return view('front.pages.hesap_ayarlari', compact('user'));
+    }
+
     public function firma_bilgi_guncelle(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
@@ -543,6 +550,50 @@ class PageController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Firma bilgileri başarıyla güncellendi.',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Lütfen tüm alanları doğru şekilde doldurun.',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Bilgiler güncellenirken bir hata oluştu. Lütfen tekrar deneyin.',
+            ], 500);
+        }
+    }
+
+    public function hesap_bilgi_guncelle(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:users,email,'.Auth::id(),
+                'phone' => 'required|string|size:11',
+                'location' => 'required|string|max:255',
+            ], [
+                'name.required' => 'Ad Soyad alanı gereklidir.',
+                'email.required' => 'E-posta alanı gereklidir.',
+                'email.email' => 'Geçerli bir e-posta adresi giriniz.',
+                'email.unique' => 'Bu e-posta adresi zaten kullanılıyor.',
+                'phone.required' => 'Telefon alanı gereklidir.',
+                'phone.size' => 'Telefon numarası 11 haneli olmalıdır.',
+                'location.required' => 'Şehir seçimi gereklidir.',
+            ]);
+
+            $user = Auth::user();
+            $user->update([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'location' => $validated['location'],
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Hesap bilgileriniz başarıyla güncellendi.',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
