@@ -3,7 +3,7 @@
 @section('content')
 
     <!-- Main Content -->
-    <div class="main-content">
+
       <div class="admin-header d-flex justify-content-between align-items-center flex-wrap">
         <div>
           <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">
@@ -135,7 +135,7 @@
           </nav>
         </div>
       </div>
-    </div>
+
 
 
 @endsection

@@ -4,7 +4,7 @@
 
 
     <!-- Main Content -->
-    <div class="main-content">
+
       <div class="admin-header d-flex justify-content-between align-items-center">
         <div>
           <button class="btn btn-outline-primary d-md-none" onclick="toggleSidebar()">
@@ -99,7 +99,7 @@
           </div>
         </div>
       </div>
-    </div>
+
 
 
 @endsection
