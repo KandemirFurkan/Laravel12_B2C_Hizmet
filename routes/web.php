@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,5 +35,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/hesap-bilgi-guncelle', [PageController::class, 'hesap_bilgi_guncelle'])->name('hesap_bilgi_guncelle');
     Route::post('/firma-bilgi-guncelle', [PageController::class, 'firma_bilgi_guncelle'])->name('firma_bilgi_guncelle');
     Route::post('/sifre-guncelle', [PageController::class, 'sifre_guncelle'])->name('sifre_guncelle');
+
+});
+
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/', [DashboardController::class, 'index'])->name('login');
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::get('/sliders', [DashboardController::class, 'sliders'])->name('sliders');
+    Route::get('/categories', [DashboardController::class, 'categories'])->name('categories');
+    Route::get('/blogs', [DashboardController::class, 'blogs'])->name('blogs');
+    Route::get('/members', [DashboardController::class, 'members'])->name('members');
+    Route::get('/corp_members', [DashboardController::class, 'corp_members'])->name('corp_members');
+    Route::get('/requestforms', [DashboardController::class, 'requestforms'])->name('requestforms');
+    Route::get('/general_set', [DashboardController::class, 'general_set'])->name('general_set');
 
 });

@@ -305,7 +305,7 @@ class PageController extends Controller
         $talepler->each(function ($talep) {
             $teklifler = teklifler::where('talep_id', $talep->id)->get();
             $talep->teklif_sayisi = $teklifler->count();
-            
+
             if ($talep->teklif_sayisi > 0) {
                 $talep->min_teklif = $teklifler->min('price');
                 $talep->max_teklif = $teklifler->max('price');
