@@ -3,13 +3,76 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Girişi - Hizmet Platformu</title>
+    <title>Admin Girişi </title>
     <link rel="stylesheet" href="{{ asset('assetAdmin/admin-styles.css') }}">
     <link rel="stylesheet" href="{{ asset('assetAdmin/bootstrap-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('assetAdmin/bootstrap.min.css') }}">
 
     <style>
-
+      body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 0;
+      }
+      .admin-login-card {
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        border: none;
+        overflow: hidden;
+      }
+      .admin-login-header {
+        background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+      }
+      .admin-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 2rem;
+      }
+      .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+      }
+      .btn-login {
+        background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+        border: none;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
+      }
+      .password-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #6c757d;
+        cursor: pointer;
+        z-index: 10;
+      }
+      .password-toggle:hover {
+        color: #0d6efd;
+      }
+      .alert-custom {
+        border-radius: 8px;
+        border-left: 4px solid;
+      }
     </style>
   </head>
   <body>
@@ -31,23 +94,13 @@
 
             <!-- Form -->
             <div class="card-body p-4 p-lg-5">
-              <div class="alert alert-info alert-custom border-info mb-4" role="alert">
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="me-1">
-                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                  <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
-                </svg>
-                <strong>Güvenlik:</strong> Bu sayfa sadece yetkili personel için erişilebilirdir.
-              </div>
+
 
               <form id="adminLoginForm" novalidate>
                 <div class="mb-3">
                   <label for="adminUsername" class="form-label fw-bold">Kullanıcı Adı</label>
                   <div class="input-group">
-                    <span class="input-group-text bg-light">
-                      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664z"/>
-                      </svg>
-                    </span>
+
                     <input type="text" class="form-control" id="adminUsername" placeholder="Kullanıcı adınızı girin" required autofocus>
                   </div>
                 </div>
@@ -56,21 +109,11 @@
                   <label for="adminPassword" class="form-label fw-bold">Şifre</label>
                   <div class="position-relative">
                     <input type="password" class="form-control" id="adminPassword" placeholder="Şifrenizi girin" required>
-                    <button type="button" class="password-toggle" onclick="togglePassword()">
-                      <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16" id="eyeIcon">
-                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
-                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
-                      </svg>
-                    </button>
+
                   </div>
                 </div>
 
-                <div class="mb-3 form-check">
-                  <input type="checkbox" class="form-check-input" id="rememberMe">
-                  <label class="form-check-label" for="rememberMe">
-                    Beni hatırla
-                  </label>
-                </div>
+
 
                 <div class="d-grid mb-3">
                   <button type="submit" class="btn btn-primary btn-login">
@@ -82,14 +125,6 @@
                   </button>
                 </div>
 
-                <div class="text-center">
-                  <a href="../login.html" class="text-muted text-decoration-none small">
-                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16" class="me-1" style="vertical-align: text-bottom;">
-                      <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
-                    </svg>
-                    Kullanıcı girişi sayfasına dön
-                  </a>
-                </div>
               </form>
             </div>
 

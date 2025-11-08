@@ -11,7 +11,7 @@ Route::get('/blog', [PageController::class, 'blog'])->name('blog');
 Route::get('/blog/{slug}', [PageController::class, 'blog_detay'])->name('blog_detay');
 Route::get('/iletisim', [PageController::class, 'iletisim'])->name('iletisim');
 Route::get('/login', [PageController::class, 'login'])->name('login');
-Route::post('/login', [PageController::class, 'login_post'])->name('login.post');
+
 Route::post('/logout', [PageController::class, 'logout'])->name('logout');
 Route::get('/kurumsal_kayit', [PageController::class, 'kurumsal_reg'])->name('kurumsal_reg');
 Route::get('/bireysel_kayit', [PageController::class, 'bireysel_reg'])->name('bireysel_reg');
