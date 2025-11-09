@@ -51,6 +51,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/sliders/{id}', [DashboardController::class, 'slider_update'])->name('sliders.update');
         Route::delete('/sliders/{id}', [DashboardController::class, 'slider_destroy'])->name('sliders.destroy');
         Route::get('/categories', [DashboardController::class, 'categories'])->name('categories');
+        Route::get('/categories/create', [DashboardController::class, 'category_add'])->name('category_add');
+        Route::post('/categories', [DashboardController::class, 'category_store'])->name('categories.store');
+        Route::get('/categories/edit/{id}', [DashboardController::class, 'category_edit'])->name('category_edit');
+        Route::put('/categories/{id}', [DashboardController::class, 'category_update'])->name('categories.update');
+        Route::delete('/categories/{id}', [DashboardController::class, 'category_destroy'])->name('categories.destroy');
         Route::get('/blogs', [DashboardController::class, 'blogs'])->name('blogs');
         Route::get('/members', [DashboardController::class, 'members'])->name('members');
         Route::get('/corp_members', [DashboardController::class, 'corp_members'])->name('corp_members');

@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminLoginRequest;
+use App\Http\Requests\Admin\CategoryStoreRequest;
+use App\Http\Requests\Admin\CategoryUpdateRequest;
 use App\Http\Requests\Admin\SliderStoreRequest;
 use App\Http\Requests\Admin\SliderUpdateRequest;
 use App\Models\Admin;
+use App\Models\Category;
 use App\Models\Slider;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -297,7 +300,102 @@ class DashboardController extends Controller
 
     public function categories(): View
     {
-        return view('admin.pages.categories');
+        $categories = Category::query()
+            ->orderByDesc('id')
+            ->paginate(10);
+
+        return view('admin.pages.categories', compact('categories'));
+    }
+
+    public function category_add(): View
+    {
+        return view('admin.pages.category_add');
+    }
+
+    public function category_store(CategoryStoreRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+        $status = $this->normalizeStatus($data['status']);
+
+        try {
+            Category::create([
+                'name' => $data['name'],
+                'slug' => Str::slug($data['name']),
+                'description' => $data['description'],
+                'status' => $status,
+            ]);
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Kategori kaydedilirken bir hata oluştu.');
+        }
+
+        return redirect()
+            ->route('admin.categories')
+            ->with('success', 'Kategori başarıyla eklendi.');
+    }
+
+    public function category_edit($id): RedirectResponse|View
+    {
+        $category = Category::find($id);
+
+        if (! $category) {
+            return redirect()
+                ->route('admin.categories')
+                ->with('error', 'Kategori bulunamadı.');
+        }
+
+        return view('admin.pages.category_edit', compact('category'));
+    }
+
+    public function category_update(CategoryUpdateRequest $request, $id): RedirectResponse
+    {
+        $category = Category::find($id);
+
+        if (! $category) {
+            return redirect()
+                ->route('admin.categories')
+                ->with('error', 'Güncellenmek istenen kategori bulunamadı.');
+        }
+
+        $data = $request->validated();
+        $status = $this->normalizeStatus($data['status']);
+
+        $category->update([
+            'name' => $data['name'],
+            'slug' => Str::slug($data['name']),
+            'description' => $data['description'],
+            'status' => $status,
+        ]);
+
+        return redirect()
+            ->route('admin.categories')
+            ->with('success', 'Kategori başarıyla güncellendi.');
+    }
+
+    public function category_destroy($id): RedirectResponse
+    {
+        $category = Category::find($id);
+
+        if (! $category) {
+            return redirect()
+                ->route('admin.categories')
+                ->with('error', 'Silinmek istenen kategori bulunamadı.');
+        }
+
+        $category->delete();
+
+        return redirect()
+            ->route('admin.categories')
+            ->with('success', 'Kategori başarıyla silindi.');
+    }
+
+    private function normalizeStatus(mixed $status): int
+    {
+        return in_array((string) $status, ['1', 'true', 'active'], true) ? 1 : 0;
     }
 
     public function blogs(): View
