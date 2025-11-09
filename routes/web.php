@@ -57,6 +57,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/categories/{id}', [DashboardController::class, 'category_update'])->name('categories.update');
         Route::delete('/categories/{id}', [DashboardController::class, 'category_destroy'])->name('categories.destroy');
         Route::get('/blogs', [DashboardController::class, 'blogs'])->name('blogs');
+        Route::get('/blogs/create', [DashboardController::class, 'blog_add'])->name('blog_add');
+        Route::post('/blogs', [DashboardController::class, 'blog_store'])->name('blogs.store');
+        Route::get('/blogs/edit/{id}', [DashboardController::class, 'blog_edit'])->name('blog_edit');
+        Route::put('/blogs/{id}', [DashboardController::class, 'blog_update'])->name('blogs.update');
+        Route::delete('/blogs/{id}', [DashboardController::class, 'blog_destroy'])->name('blogs.destroy');
         Route::get('/members', [DashboardController::class, 'members'])->name('members');
         Route::get('/corp_members', [DashboardController::class, 'corp_members'])->name('corp_members');
         Route::get('/requestforms', [DashboardController::class, 'requestforms'])->name('requestforms');

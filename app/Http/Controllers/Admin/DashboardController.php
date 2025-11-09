@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\AdminLoginRequest;
-use App\Http\Requests\Admin\CategoryStoreRequest;
-use App\Http\Requests\Admin\CategoryUpdateRequest;
-use App\Http\Requests\Admin\SliderStoreRequest;
-use App\Http\Requests\Admin\SliderUpdateRequest;
+use Throwable;
+use App\Models\Blog;
 use App\Models\Admin;
-use App\Models\Category;
+use RuntimeException;
 use App\Models\Slider;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Category;
+use Illuminate\View\View;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use Illuminate\View\View;
-use RuntimeException;
-use Throwable;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\Admin\AdminLoginRequest;
+use App\Http\Requests\Admin\SliderStoreRequest;
+use App\Http\Requests\Admin\SliderUpdateRequest;
+use App\Http\Requests\Admin\CategoryStoreRequest;
+use App\Http\Requests\Admin\CategoryUpdateRequest;
 
 class DashboardController extends Controller
 {
@@ -400,7 +401,31 @@ class DashboardController extends Controller
 
     public function blogs(): View
     {
-        return view('admin.pages.blogs');
+        $blogs = Blog::query()
+            ->orderByDesc('id')
+            ->where('status', 1)
+            ->paginate(10);
+        return view('admin.pages.blogs', compact('blogs'));
+    }
+    public function blog_add(): View
+    {
+        return view('admin.pages.blog_add');
+    }
+    public function blog_store(): View
+    {
+        return view('admin.pages.blog_store');
+    }
+    public function blog_edit(): View
+    {
+        return view('admin.pages.blog_edit');
+    }
+    public function blog_update(): View
+    {
+        return view('admin.pages.blog_update');
+    }
+    public function blog_destroy(): View
+    {
+        return view('admin.pages.blog_destroy');
     }
 
     public function members(): View
