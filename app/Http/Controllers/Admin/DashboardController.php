@@ -4,12 +4,19 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminLoginRequest;
+use App\Http\Requests\Admin\SliderStoreRequest;
+use App\Http\Requests\Admin\SliderUpdateRequest;
 use App\Models\Admin;
+use App\Models\Slider;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
+use RuntimeException;
+use Throwable;
 
 class DashboardController extends Controller
 {
@@ -60,7 +67,232 @@ class DashboardController extends Controller
 
     public function sliders(): View
     {
-        return view('admin.pages.slider');
+        $sliders = Slider::query()
+            ->orderBy('display_order')
+            ->orderByDesc('id')
+            ->paginate(6);
+
+        return view('admin.pages.slider', compact('sliders'));
+    }
+
+    public function slider_store(SliderStoreRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $uploadPath = public_path('uploads/slider');
+        $thumbnailPath = public_path('uploads/slider/thumbs');
+
+        File::ensureDirectoryExists($uploadPath);
+        File::ensureDirectoryExists($thumbnailPath);
+
+        $imageFile = $request->file('image');
+        $extension = strtolower($imageFile->getClientOriginalExtension());
+        $fileName = Str::uuid()->toString().'.'.$extension;
+
+        $storedOriginalPath = $uploadPath.DIRECTORY_SEPARATOR.$fileName;
+        $storedThumbnailPath = $thumbnailPath.DIRECTORY_SEPARATOR.'thumb-'.$fileName;
+
+        $thumbnailRelativePath = 'uploads/slider/thumbs/thumb-'.$fileName;
+
+        try {
+            $imageFile->move($uploadPath, $fileName);
+
+            $this->generateThumbnail($storedOriginalPath, $storedThumbnailPath, $extension, 200, 200);
+
+            Slider::create([
+                'title' => $data['title'],
+                'subtitle' => $data['description'],
+                'image' => 'uploads/slider/'.$fileName,
+                'display_order' => $data['order'] ?? 1,
+                'thumbnail' => $thumbnailRelativePath,
+                'status' => $data['status'] === 'active',
+            ]);
+        } catch (Throwable $exception) {
+            if (File::exists($storedOriginalPath)) {
+                File::delete($storedOriginalPath);
+            }
+
+            if (File::exists($storedThumbnailPath)) {
+                File::delete($storedThumbnailPath);
+            }
+
+            report($exception);
+
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Slider kaydedilirken bir hata oluştu.');
+        }
+
+        return redirect()
+            ->route('admin.sliders')
+            ->with('success', 'Slider başarıyla kaydedildi.');
+    }
+
+    public function slider_add(): View
+    {
+        return view('admin.pages.slider_add');
+    }
+
+    public function slider_edit($id): View
+    {
+        $slider = Slider::find($id);
+
+        return view('admin.pages.slider_edit', compact('slider'));
+    }
+
+    public function slider_destroy($id): RedirectResponse
+    {
+        $slider = Slider::find($id);
+
+        if (! $slider) {
+            return redirect()
+                ->route('admin.sliders')
+                ->with('error', 'Silinmek istenen slider bulunamadı.');
+        }
+
+        if ($slider->image && File::exists(public_path($slider->image))) {
+            File::delete(public_path($slider->image));
+        }
+
+        if ($slider->thumbnail && File::exists(public_path($slider->thumbnail))) {
+            File::delete(public_path($slider->thumbnail));
+        }
+
+        $slider->delete();
+
+        return redirect()
+            ->route('admin.sliders')
+            ->with('success', 'Slider başarıyla silindi.');
+    }
+
+    public function slider_update(SliderUpdateRequest $request, $id): RedirectResponse
+    {
+        $slider = Slider::find($id);
+
+        if (! $slider) {
+            return redirect()
+                ->route('admin.sliders')
+                ->with('error', 'Güncellenmek istenen slider bulunamadı.');
+        }
+
+        $data = $request->validated();
+
+        $updateData = [
+            'title' => $data['title'],
+            'subtitle' => $data['description'],
+            'display_order' => $data['order'] ?? $slider->display_order,
+            'status' => $data['status'] === 'active',
+        ];
+
+        if ($request->hasFile('image')) {
+            $uploadPath = public_path('uploads/slider');
+            $thumbnailPath = public_path('uploads/slider/thumbs');
+
+            File::ensureDirectoryExists($uploadPath);
+            File::ensureDirectoryExists($thumbnailPath);
+
+            $imageFile = $request->file('image');
+            $extension = strtolower($imageFile->getClientOriginalExtension());
+            $fileName = Str::uuid()->toString().'.'.$extension;
+
+            $storedOriginalPath = $uploadPath.DIRECTORY_SEPARATOR.$fileName;
+            $storedThumbnailPath = $thumbnailPath.DIRECTORY_SEPARATOR.'thumb-'.$fileName;
+
+            try {
+                $imageFile->move($uploadPath, $fileName);
+
+                $this->generateThumbnail($storedOriginalPath, $storedThumbnailPath, $extension, 200, 200);
+
+                if ($slider->image && File::exists(public_path($slider->image))) {
+                    File::delete(public_path($slider->image));
+                }
+
+                if ($slider->thumbnail && File::exists(public_path($slider->thumbnail))) {
+                    File::delete(public_path($slider->thumbnail));
+                }
+
+                $updateData['image'] = 'uploads/slider/'.$fileName;
+                $updateData['thumbnail'] = 'uploads/slider/thumbs/thumb-'.$fileName;
+            } catch (Throwable $exception) {
+                if (File::exists($storedOriginalPath)) {
+                    File::delete($storedOriginalPath);
+                }
+
+                if (File::exists($storedThumbnailPath)) {
+                    File::delete($storedThumbnailPath);
+                }
+
+                report($exception);
+
+                return redirect()
+                    ->route('admin.sliders')
+                    ->with('error', 'Slider güncellenirken bir hata oluştu.');
+            }
+        }
+
+        $slider->update($updateData);
+
+        return redirect()
+            ->route('admin.sliders')
+            ->with('success', 'Slider başarıyla güncellendi.');
+    }
+
+    /**
+     * @throws RuntimeException
+     */
+    private function generateThumbnail(string $sourcePath, string $destinationPath, string $extension, int $width, int $height): void
+    {
+        $imageResource = $this->createImageResource($sourcePath, $extension);
+
+        if ($imageResource === null) {
+            throw new RuntimeException('Desteklenmeyen görsel formatı.');
+        }
+
+        $sourceWidth = imagesx($imageResource);
+        $sourceHeight = imagesy($imageResource);
+
+        if ($sourceWidth === 0 || $sourceHeight === 0) {
+            imagedestroy($imageResource);
+            throw new RuntimeException('Geçersiz görsel boyutu.');
+        }
+
+        $ratio = min($width / $sourceWidth, $height / $sourceHeight);
+        $targetWidth = (int) round($sourceWidth * $ratio);
+        $targetHeight = (int) round($sourceHeight * $ratio);
+
+        $canvas = imagecreatetruecolor($width, $height);
+
+        if (in_array($extension, ['png', 'webp'], true)) {
+            imagealphablending($canvas, false);
+            imagesavealpha($canvas, true);
+            $transparent = imagecolorallocatealpha($canvas, 0, 0, 0, 127);
+            imagefilledrectangle($canvas, 0, 0, $width, $height, $transparent);
+        } else {
+            $white = imagecolorallocate($canvas, 255, 255, 255);
+            imagefilledrectangle($canvas, 0, 0, $width, $height, $white);
+        }
+
+        $destinationX = (int) floor(($width - $targetWidth) / 2);
+        $destinationY = (int) floor(($height - $targetHeight) / 2);
+
+        imagecopyresampled(
+            $canvas,
+            $imageResource,
+            $destinationX,
+            $destinationY,
+            0,
+            0,
+            $targetWidth,
+            $targetHeight,
+            $sourceWidth,
+            $sourceHeight
+        );
+
+        $this->saveImageResource($canvas, $destinationPath, $extension);
+
+        imagedestroy($imageResource);
+        imagedestroy($canvas);
     }
 
     public function categories(): View
@@ -91,6 +323,36 @@ class DashboardController extends Controller
     public function general_set(): View
     {
         return view('admin.pages.general_set');
+    }
+
+    /**
+     * @throws RuntimeException
+     */
+    private function createImageResource(string $path, string $extension)
+    {
+        return match ($extension) {
+            'jpg', 'jpeg' => imagecreatefromjpeg($path),
+            'png' => imagecreatefrompng($path),
+            'webp' => imagecreatefromwebp($path),
+            default => null,
+        };
+    }
+
+    /**
+     * @throws RuntimeException
+     */
+    private function saveImageResource($image, string $path, string $extension): void
+    {
+        $saved = match ($extension) {
+            'jpg', 'jpeg' => imagejpeg($image, $path, 85),
+            'png' => imagepng($image, $path, 6),
+            'webp' => imagewebp($image, $path, 80),
+            default => false,
+        };
+
+        if (! $saved) {
+            throw new RuntimeException('Görsel kaydedilemedi.');
+        }
     }
 
     public function logout(Request $request): RedirectResponse

@@ -45,6 +45,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
         Route::get('/sliders', [DashboardController::class, 'sliders'])->name('sliders');
+        Route::post('/sliders', [DashboardController::class, 'slider_store'])->name('sliders.store');
+        Route::get('/slider_ekle', [DashboardController::class, 'slider_add'])->name('slider_add');
+        Route::get('/sliders/edit/{id}', [DashboardController::class, 'slider_edit'])->name('slider_edit');
+        Route::put('/sliders/{id}', [DashboardController::class, 'slider_update'])->name('sliders.update');
+        Route::delete('/sliders/{id}', [DashboardController::class, 'slider_destroy'])->name('sliders.destroy');
         Route::get('/categories', [DashboardController::class, 'categories'])->name('categories');
         Route::get('/blogs', [DashboardController::class, 'blogs'])->name('blogs');
         Route::get('/members', [DashboardController::class, 'members'])->name('members');

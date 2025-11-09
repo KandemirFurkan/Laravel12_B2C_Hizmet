@@ -13,11 +13,23 @@
           </button>
           <h4 class="mb-0 ms-2 ms-md-0">Slider Yönetimi</h4>
         </div>
-        <a href="slider-add.html" class="btn btn-primary">
+        <a href="{{ route('admin.slider_add') }}" class="btn btn-primary">
           <i class="bi bi-plus-circle me-1"></i>
           Yeni Slider Ekle
         </a>
       </div>
+
+      @if (session('success'))
+        <div class="alert alert-success mt-3" role="alert">
+          {{ session('success') }}
+        </div>
+      @endif
+
+      @if (session('error'))
+        <div class="alert alert-danger mt-3" role="alert">
+          {{ session('error') }}
+        </div>
+      @endif
 
       <div class="card shadow-sm">
         <div class="card-body">
@@ -34,48 +46,61 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><img src="../imgs/slider1.jpg" alt="Slider 1" style="width: 120px; height: 60px; object-fit: cover; border-radius: 4px;"></td>
-                  <td>Profesyonel Hizmetlere Hızlıca Ulaşın</td>
-                  <td>İhtiyacınıza uygun uzmanları listeler, karşılaştırır ve temasa geçersiniz.</td>
-                  <td><span class="badge bg-success">Aktif</span></td>
-                  <td>1</td>
-                  <td>
-                    <div class="table-actions">
-                      <a href="slider-edit.html?id=1" class="btn btn-sm btn-outline-primary btn-action">Düzenle</a>
-                      <button class="btn btn-sm btn-outline-danger btn-action" onclick="deleteSlider(1)">Sil</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td><img src="https://placehold.co/120x60?text=Slider+2" alt="Slider 2" style="width: 120px; height: 60px; object-fit: cover; border-radius: 4px;"></td>
-                  <td>Güvenilir Uzmanlar</td>
-                  <td>Doğrulanmış değerlendirmeler ve referanslarla doğru tercih.</td>
-                  <td><span class="badge bg-secondary">Pasif</span></td>
-                  <td>2</td>
-                  <td>
-                    <div class="table-actions">
-                      <a href="slider-edit.html?id=2" class="btn btn-sm btn-outline-primary btn-action">Düzenle</a>
-                      <button class="btn btn-sm btn-outline-danger btn-action" onclick="deleteSlider(2)">Sil</button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td><img src="https://placehold.co/120x60?text=Slider+3" alt="Slider 3" style="width: 120px; height: 60px; object-fit: cover; border-radius: 4px;"></td>
-                  <td>Hızlı Teslimat</td>
-                  <td>Takvim ve süreç yönetimi ile işleri kolaylaştırın.</td>
-                  <td><span class="badge bg-secondary">Pasif</span></td>
-                  <td>3</td>
-                  <td>
-                    <div class="table-actions">
-                      <a href="slider-edit.html?id=3" class="btn btn-sm btn-outline-primary btn-action">Düzenle</a>
-                      <button class="btn btn-sm btn-outline-danger btn-action" onclick="deleteSlider(3)">Sil</button>
-                    </div>
-                  </td>
-                </tr>
+                @forelse ($sliders as $slider)
+                  @php
+                    $imageSource = $slider->thumbnail
+                        ? asset($slider->thumbnail)
+                        : ($slider->image ? asset($slider->image) : 'https://placehold.co/200x200?text=Slider');
+                  @endphp
+                  <tr>
+                    <td>
+                      <div class="slider-thumb-wrapper">
+                        <img
+                          src="{{ $imageSource }}"
+                          alt="{{ $slider->title }}"
+                          class="slider-thumb"
+                          loading="lazy"
+                        >
+                      </div>
+                    </td>
+                    <td>{{ $slider->title }}</td>
+                    <td>{{ $slider->subtitle }}</td>
+                    <td>
+                      @if ($slider->status)
+                        <span class="badge bg-success">Aktif</span>
+                      @else
+                        <span class="badge bg-secondary">Pasif</span>
+                      @endif
+                    </td>
+                    <td>{{ $slider->display_order }}</td>
+                    <td>
+                      <div class="d-flex gap-2">
+                        <a href="{{ route('admin.slider_edit', ['id' => $slider->id]) }}" class="btn btn-sm btn-outline-primary">Düzenle</a>
+                        <form action="{{ route('admin.sliders.destroy', $slider->id) }}" method="POST" onsubmit="return confirm('Bu sliderı silmek istediğinize emin misiniz?');">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="btn btn-sm btn-outline-danger">Sil</button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                  
+                @empty
+                  <tr>
+                    <td colspan="6" class="text-center text-muted">Henüz slider kaydı bulunmuyor.</td>
+                  </tr>
+                @endforelse
               </tbody>
             </table>
           </div>
+          @if ($sliders->hasPages())
+            <div class="pagination-container">
+              <div class="pagination-summary">
+                {{ $sliders->firstItem() }} - {{ $sliders->lastItem() }} / {{ $sliders->total() }} kayıt
+              </div>
+              {{ $sliders->onEachSide(1)->links('vendor.pagination.admin') }}
+            </div>
+          @endif
         </div>
       </div>
 
