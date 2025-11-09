@@ -41,14 +41,15 @@ Route::middleware('auth')->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [DashboardController::class, 'login'])->name('login');
     Route::post('/login', [DashboardController::class, 'authenticate'])->name('authenticate');
-    Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
-    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-    Route::get('/sliders', [DashboardController::class, 'sliders'])->name('sliders');
-    Route::get('/categories', [DashboardController::class, 'categories'])->name('categories');
-    Route::get('/blogs', [DashboardController::class, 'blogs'])->name('blogs');
-    Route::get('/members', [DashboardController::class, 'members'])->name('members');
-    Route::get('/corp_members', [DashboardController::class, 'corp_members'])->name('corp_members');
-    Route::get('/requestforms', [DashboardController::class, 'requestforms'])->name('requestforms');
-    Route::get('/general_set', [DashboardController::class, 'general_set'])->name('general_set');
-
+    Route::middleware('admin.auth')->group(function () {
+        Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
+        Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+        Route::get('/sliders', [DashboardController::class, 'sliders'])->name('sliders');
+        Route::get('/categories', [DashboardController::class, 'categories'])->name('categories');
+        Route::get('/blogs', [DashboardController::class, 'blogs'])->name('blogs');
+        Route::get('/members', [DashboardController::class, 'members'])->name('members');
+        Route::get('/corp_members', [DashboardController::class, 'corp_members'])->name('corp_members');
+        Route::get('/requestforms', [DashboardController::class, 'requestforms'])->name('requestforms');
+        Route::get('/general_set', [DashboardController::class, 'general_set'])->name('general_set');
+    });
 });

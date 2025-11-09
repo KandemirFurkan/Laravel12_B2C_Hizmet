@@ -58,6 +58,41 @@ class DashboardController extends Controller
         return view('admin.pages.dashboard');
     }
 
+    public function sliders(): View
+    {
+        return view('admin.pages.slider');
+    }
+
+    public function categories(): View
+    {
+        return view('admin.pages.categories');
+    }
+
+    public function blogs(): View
+    {
+        return view('admin.pages.blogs');
+    }
+
+    public function members(): View
+    {
+        return view('admin.pages.members');
+    }
+
+    public function corp_members(): View
+    {
+        return view('admin.pages.corp_members');
+    }
+
+    public function requestforms(): View
+    {
+        return view('admin.pages.requestforms');
+    }
+
+    public function general_set(): View
+    {
+        return view('admin.pages.general_set');
+    }
+
     public function logout(Request $request): RedirectResponse
     {
         $request->session()->invalidate();

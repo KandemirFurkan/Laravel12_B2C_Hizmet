@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminAuthenticate;
 use App\Http\Middleware\MenuData;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -12,7 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-         $middleware->append(MenuData::class);
+        $middleware->alias([
+            'admin.auth' => AdminAuthenticate::class,
+        ]);
+
+        $middleware->append(MenuData::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
