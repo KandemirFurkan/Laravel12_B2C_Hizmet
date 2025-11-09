@@ -39,8 +39,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->name('admin.')->group(function () {
-
-    Route::get('/', [DashboardController::class, 'index'])->name('login');
+    Route::get('/', [DashboardController::class, 'login'])->name('login');
+    Route::post('/login', [DashboardController::class, 'authenticate'])->name('authenticate');
+    Route::post('/logout', [DashboardController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/sliders', [DashboardController::class, 'sliders'])->name('sliders');
     Route::get('/categories', [DashboardController::class, 'categories'])->name('categories');

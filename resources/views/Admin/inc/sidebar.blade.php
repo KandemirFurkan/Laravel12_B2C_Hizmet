@@ -55,10 +55,13 @@
           </a>
         </li>
         <li class="mt-4">
-          <a href="#">
+          <a href="#" onclick="event.preventDefault(); document.getElementById('adminLogoutForm').submit();">
             <i class="bi bi-box-arrow-right"></i>
             Çıkış Yap
           </a>
         </li>
       </ul>
+      <form id="adminLogoutForm" action="{{ route('admin.logout') }}" method="POST" class="d-none">
+        @csrf
+      </form>
     </nav>

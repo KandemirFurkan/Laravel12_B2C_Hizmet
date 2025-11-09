@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Girişi </title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('assetAdmin/admin-styles.css') }}">
     <link rel="stylesheet" href="{{ asset('assetAdmin/bootstrap-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('assetAdmin/bootstrap.min.css') }}">
@@ -96,19 +97,22 @@
             <div class="card-body p-4 p-lg-5">
 
 
-              <form id="adminLoginForm" novalidate>
+              <div id="loginAlert" class="alert alert-custom d-none mb-3"></div>
+
+              <form id="adminLoginForm" novalidate action="{{ route('admin.authenticate') }}" method="POST">
+                @csrf
                 <div class="mb-3">
-                  <label for="adminUsername" class="form-label fw-bold">Kullanıcı Adı</label>
+                  <label for="username" class="form-label fw-bold">Kullanıcı Adı</label>
                   <div class="input-group">
 
-                    <input type="text" class="form-control" id="adminUsername" placeholder="Kullanıcı adınızı girin" required autofocus>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Kullanıcı adınızı girin" required autofocus>
                   </div>
                 </div>
 
                 <div class="mb-3">
-                  <label for="adminPassword" class="form-label fw-bold">Şifre</label>
+                  <label for="password" class="form-label fw-bold">Şifre</label>
                   <div class="position-relative">
-                    <input type="password" class="form-control" id="adminPassword" placeholder="Şifrenizi girin" required>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Şifrenizi girin" required>
 
                   </div>
                 </div>
@@ -140,8 +144,77 @@
       </div>
     </div>
 
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('adminLoginForm');
+      const alertContainer = document.getElementById('loginAlert');
+      const submitButton = form.querySelector('button[type="submit"]');
 
+      const showAlert = (message, type = 'danger') => {
+        alertContainer.textContent = message;
+        alertContainer.classList.remove('d-none', 'alert-danger', 'alert-success');
+        alertContainer.classList.add(`alert-${type}`);
+      };
 
+      const hideAlert = () => {
+        alertContainer.classList.add('d-none');
+        alertContainer.classList.remove('alert-danger', 'alert-success');
+        alertContainer.textContent = '';
+      };
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        hideAlert();
+
+        const formData = new FormData(form);
+        const username = (formData.get('username') || '').toString().trim();
+        const password = (formData.get('password') || '').toString().trim();
+
+        if (!username || !password) {
+          showAlert('Kullanıcı adı ve şifre alanları boş bırakılamaz.');
+          return;
+        }
+
+        formData.set('username', username);
+        formData.set('password', password);
+
+        submitButton.disabled = true;
+        submitButton.classList.add('disabled');
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+              'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value,
+              'Accept': 'application/json',
+            },
+            body: formData,
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            showAlert(data.message ?? 'Giriş başarılı.', 'success');
+            setTimeout(() => {
+              window.location.href = data.redirect ?? '{{ route('admin.dashboard') }}';
+            }, 500);
+            return;
+          }
+
+          const errors = data.errors ?? {};
+          const errorMessages = Object.values(errors).flat();
+          const message = errorMessages.length > 0 ? errorMessages[0] : (data.message ?? 'Giriş sırasında bir hata oluştu.');
+          showAlert(message);
+        } catch (error) {
+          showAlert('Beklenmeyen bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+        } finally {
+          submitButton.disabled = false;
+          submitButton.classList.remove('disabled');
+        }
+      });
+    });
+  </script>
   </body>
 </html>
 
