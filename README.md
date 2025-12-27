@@ -11,7 +11,7 @@ The goal is to create a scalable backend infrastructure that makes the service a
 
 #My Role
 
-This project was developed end-to-end by me as the **sole developer**.
+
 
 - End-to-end backend development  
 - System architecture and structure design  
