@@ -22,7 +22,7 @@ class PageController extends Controller
     public function index()
     {
         $categories = Category::where('status', 1)->get();
-        $sliders = Slider::where('status', 1)->get();
+        $sliders = Slider::where('status', 1)->orderBy('display_order', 'asc')->get();
         $hizmetlers = Hizmetler::where('status', 1)
             ->limit(8)
             ->get();

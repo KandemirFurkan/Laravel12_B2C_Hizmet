@@ -7,6 +7,7 @@
         <div id="mainCarousel" class="carousel slide rounded overflow-hidden shadow-sm" data-bs-ride="carousel">
 
         <div class="carousel-inner">
+       
           @foreach($sliders as $slider)
           <div class="carousel-item @if($loop->first) active @endif">
             <img src="{{ asset($slider->image) }}" class="d-block w-100" alt="{{ $slider->title }}">
